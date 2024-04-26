@@ -1,202 +1,170 @@
 -- CreateTable
-CREATE TABLE `User` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `loginType` VARCHAR(191) NULL DEFAULT 'email',
-    `password` VARCHAR(191) NULL,
-    `email` VARCHAR(191) NULL,
-    `firstName` VARCHAR(191) NULL,
-    `lastName` VARCHAR(191) NULL,
-    `username` VARCHAR(191) NULL,
-    `phone` VARCHAR(191) NULL,
-    `stripeCustomerId` VARCHAR(191) NULL,
+CREATE TABLE "User" (
+    "id" SERIAL PRIMARY KEY,
+    "loginType" VARCHAR(191) DEFAULT 'email',
+    "password" VARCHAR(191),
+    "email" VARCHAR(191),
+    "firstName" VARCHAR(191),
+    "lastName" VARCHAR(191),
+    "username" VARCHAR(191),
+    "phone" VARCHAR(191),
+    "stripeCustomerId" VARCHAR(191),
 
-    UNIQUE INDEX `User_email_key`(`email`),
-    UNIQUE INDEX `User_username_key`(`username`),
-    UNIQUE INDEX `User_phone_key`(`phone`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Session` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `authToken` VARCHAR(191) NOT NULL,
-    `userId` INTEGER NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-    `deletedAt` DATETIME(3) NULL,
-
-    UNIQUE INDEX `Session_authToken_key`(`authToken`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    UNIQUE ("email"),
+    UNIQUE ("username"),
+    UNIQUE ("phone")
+);
 
 -- CreateTable
-CREATE TABLE `Subscription` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `userId` INTEGER NOT NULL,
-    `stripeId` VARCHAR(191) NOT NULL,
-    `stripeStatus` VARCHAR(191) NULL,
-    `stripePriceId` VARCHAR(191) NULL,
-    `quantity` INTEGER NULL,
-    `trialEndsAt` INTEGER NULL,
-    `endsAt` INTEGER NULL,
-    `startDate` INTEGER NOT NULL,
-    `lastEventDate` INTEGER NOT NULL,
+CREATE TABLE "Session" (
+    "id" SERIAL PRIMARY KEY,
+    "authToken" VARCHAR(191) NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
 
-    UNIQUE INDEX `Subscription_stripeId_key`(`stripeId`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    UNIQUE ("authToken")
+);
 
 -- CreateTable
-CREATE TABLE `Question` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `authorId` INTEGER NOT NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+CREATE TABLE "Subscription" (
+    "id" SERIAL PRIMARY KEY,
+    "userId" INTEGER NOT NULL,
+    "stripeId" VARCHAR(191) NOT NULL,
+    "stripeStatus" VARCHAR(191),
+    "stripePriceId" VARCHAR(191),
+    "quantity" INTEGER,
+    "trialEndsAt" INTEGER,
+    "endsAt" INTEGER,
+    "startDate" INTEGER NOT NULL,
+    "lastEventDate" INTEGER NOT NULL,
 
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Answer` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `questionId` INTEGER NOT NULL,
-    `authorId` INTEGER NOT NULL,
-    `text` TEXT NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    UNIQUE ("stripeId")
+);
 
 -- CreateTable
-CREATE TABLE `Category` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
-    `url` VARCHAR(191) NOT NULL,
-    `image` VARCHAR(191) NULL,
-    `accentColor` VARCHAR(191) NULL,
-
-    UNIQUE INDEX `Category_name_key`(`name`),
-    UNIQUE INDEX `Category_url_key`(`url`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Question" (
+    "id" SERIAL PRIMARY KEY,
+    "authorId" INTEGER NOT NULL,
+    "title" VARCHAR(191) NOT NULL,
+    "description" VARCHAR(191) NOT NULL
+);
 
 -- CreateTable
-CREATE TABLE `Topic` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
-    `displayName` VARCHAR(191) NULL,
-    `showName` BOOLEAN NULL,
-    `url` VARCHAR(191) NOT NULL,
-    `image` VARCHAR(191) NULL,
-    `accentColor` VARCHAR(191) NULL,
-
-    UNIQUE INDEX `Topic_name_key`(`name`),
-    UNIQUE INDEX `Topic_url_key`(`url`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Answer" (
+    "id" SERIAL PRIMARY KEY,
+    "questionId" INTEGER NOT NULL,
+    "authorId" INTEGER NOT NULL,
+    "text" TEXT NOT NULL
+);
 
 -- CreateTable
-CREATE TABLE `Series` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
-    `displayName` VARCHAR(191) NULL,
-    `url` VARCHAR(191) NOT NULL,
-    `topicId` INTEGER NULL,
-    `image` VARCHAR(191) NULL,
-    `accentColor` VARCHAR(191) NULL,
-
-    UNIQUE INDEX `Series_name_key`(`name`),
-    UNIQUE INDEX `Series_url_key`(`url`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Category" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(191) NOT NULL,
+    "url" VARCHAR(191) NOT NULL,
+    "image" VARCHAR(191),
+    "accentColor" VARCHAR(191)
+);
 
 -- CreateTable
-CREATE TABLE `Video` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `url` VARCHAR(191) NOT NULL,
-    `host_type` VARCHAR(191) NOT NULL,
-    `host_id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `subtitle` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NULL,
-    `image` VARCHAR(191) NULL,
-    `topicId` INTEGER NOT NULL,
-    `seriesId` INTEGER NULL,
-    `seriesPosition` INTEGER NULL,
-    `accentColor` VARCHAR(191) NULL,
-
-    UNIQUE INDEX `Video_url_key`(`url`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Topic" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(191) NOT NULL,
+    "displayName" VARCHAR(191),
+    "showName" BOOLEAN,
+    "url" VARCHAR(191) NOT NULL,
+    "image" VARCHAR(191),
+    "accentColor" VARCHAR(191)
+);
 
 -- CreateTable
-CREATE TABLE `Tag` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
-    `accentColor` VARCHAR(191) NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `TagAssignment` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `entity_type` VARCHAR(191) NOT NULL,
-    `entity_id` INTEGER NOT NULL,
-    `tagId` INTEGER NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Series" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(191) NOT NULL,
+    "displayName" VARCHAR(191),
+    "url" VARCHAR(191) NOT NULL,
+    "topicId" INTEGER,
+    "image" VARCHAR(191),
+    "accentColor" VARCHAR(191)
+);
 
 -- CreateTable
-CREATE TABLE `CategoryAssignment` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `entity_type` VARCHAR(191) NOT NULL,
-    `entity_id` INTEGER NOT NULL,
-    `categoryId` INTEGER NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Video" (
+    "id" SERIAL PRIMARY KEY,
+    "url" VARCHAR(191) NOT NULL,
+    "host_type" VARCHAR(191) NOT NULL,
+    "host_id" VARCHAR(191) NOT NULL,
+    "title" VARCHAR(191) NOT NULL,
+    "subtitle" VARCHAR(191) NOT NULL,
+    "description" VARCHAR(191),
+    "image" VARCHAR(191),
+    "topicId" INTEGER NOT NULL,
+    "seriesId" INTEGER,
+    "seriesPosition" INTEGER,
+    "accentColor" VARCHAR(191)
+);
 
 -- CreateTable
-CREATE TABLE `TestMigration` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Tag" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(191) NOT NULL,
+    "accentColor" VARCHAR(191)
+);
 
 -- CreateTable
-CREATE TABLE `TestAnotherMigration` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE "TagAssignment" (
+    "id" SERIAL PRIMARY KEY,
+    "entity_type" VARCHAR(191) NOT NULL,
+    "entity_id" INTEGER NOT NULL,
+    "tagId" INTEGER NOT NULL
+);
 
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- CreateTable
+CREATE TABLE "CategoryAssignment" (
+    "id" SERIAL PRIMARY KEY,
+    "entity_type" VARCHAR(191) NOT NULL,
+    "entity_id" INTEGER NOT NULL,
+    "categoryId" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "TestMigration" (
+    "id" SERIAL PRIMARY KEY
+);
+
+-- CreateTable
+CREATE TABLE "TestAnotherMigration" (
+    "id" SERIAL PRIMARY KEY
+);
 
 -- AddForeignKey
-ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Subscription` ADD CONSTRAINT `Subscription_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Question` ADD CONSTRAINT `Question_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Answer` ADD CONSTRAINT `Answer_questionId_fkey` FOREIGN KEY (`questionId`) REFERENCES `Question`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Answer" ADD CONSTRAINT "Answer_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Answer` ADD CONSTRAINT `Answer_authorId_fkey` FOREIGN KEY (`authorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Answer" ADD CONSTRAINT "Answer_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Series` ADD CONSTRAINT `Series_topicId_fkey` FOREIGN KEY (`topicId`) REFERENCES `Topic`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Series" ADD CONSTRAINT "Series_topicId_fkey" FOREIGN KEY ("topicId") REFERENCES "Topic"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Video` ADD CONSTRAINT `Video_topicId_fkey` FOREIGN KEY (`topicId`) REFERENCES `Topic`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Video" ADD CONSTRAINT "Video_topicId_fkey" FOREIGN KEY ("topicId") REFERENCES "Topic"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Video` ADD CONSTRAINT `Video_seriesId_fkey` FOREIGN KEY (`seriesId`) REFERENCES `Series`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Video" ADD CONSTRAINT "Video_seriesId_fkey" FOREIGN KEY ("seriesId") REFERENCES "Series"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TagAssignment` ADD CONSTRAINT `TagAssignment_tagId_fkey` FOREIGN KEY (`tagId`) REFERENCES `Topic`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "TagAssignment" ADD CONSTRAINT "TagAssignment_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `CategoryAssignment` ADD CONSTRAINT `CategoryAssignment_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "CategoryAssignment" ADD CONSTRAINT "CategoryAssignment_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
