@@ -1,0 +1,15 @@
+/* /assets/css/tailwind.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .patternLight {
+      
+      background-color: #ffffff;
+    }
+      .patternDark {
+        background: none !important;
+      }
+      
+  }
