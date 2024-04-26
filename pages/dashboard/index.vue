@@ -3,6 +3,10 @@ import QuestionBoard from "~/components/elements/QuestionBoard.vue";
 import DashboardSidebar from "~~/components/elements/DashboardSidebar.vue";
 import PipelineHeader from "~~/components/dashboard/PipelineHeader.vue"; // Add this line
 import Tiptap from "~~/components/elements/Tiptap.vue";
+
+definePageMeta({
+  middleware: "auth",
+});
 </script>
  
  <template>
