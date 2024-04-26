@@ -19,7 +19,7 @@ const endpoint = "/api/dashboard/ask";
     <div class="md:flex">
       <DashboardSidebar />
       <div v-if="true" class="w-full">
-        <QuestionForm :data="data" :endpoint="endpoint" />.
+        <QuestionForm :data="data" :endpoint="endpoint" />
       </div>
     </div>
     <div class="h-32 flex justify-center">
