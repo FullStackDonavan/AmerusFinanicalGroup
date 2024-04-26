@@ -6,6 +6,6 @@ generator client {
 }
 
 datasource db {
-  provider = "psql"
-  url = env("DATABASE_URL") // uses connection pooling
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
 }
