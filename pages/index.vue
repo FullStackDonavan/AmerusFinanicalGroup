@@ -7,8 +7,8 @@
       image="/images/home-header-bkg.jpg"
     />
     <ChangingTheIndustryOneAgencyAtATimeSection />
-    <!-- <IndividualAndFamilySolutionsSection />
-    <SeniorSolutionsSection />
+    <SupportingGrowingAndPromotingOurAgencyPartnersSection />
+    <!-- <SeniorSolutionsSection />
     <BusinessSolutionsSection />
     <GetAnswersToYourQuestions /> -->
   </PatternSection>
