@@ -18,8 +18,8 @@
               <p
                 class="mb-8 drop-shadow text-lg font-normal text-gray-900 lg:text-xl"
               >
-                At Brokers International, building agencies is what we do best.
-                With nearly four decades of experience, Brokers International
+                At Amerus Ginanical Group, building agencies is what we do best.
+                With nearly four decades of experience, Amerus Ginanical Group
                 has become one of the country’s largest and most influential
                 insurance marketing organizations (IMOs). Known across the
                 industry as The Original Agency Builder™, we work relentlessly
