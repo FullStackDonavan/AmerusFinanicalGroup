@@ -7,9 +7,10 @@
       image="/images/home-header-bkg.jpg"
     />
     <ChangingTheIndustryOneAgencyAtATimeSection />
+    <OurCarrierPartnersSection />
     <SupportingGrowingAndPromotingOurAgencyPartnersSection />
-    <!-- <SeniorSolutionsSection />
-    <BusinessSolutionsSection />
+
+    <!-- <BusinessSolutionsSection />
     <GetAnswersToYourQuestions /> -->
   </PatternSection>
 </template>
