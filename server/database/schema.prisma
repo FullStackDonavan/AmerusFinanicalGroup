@@ -12,6 +12,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+
 model User {
   id               Int            @id @default(autoincrement())
   loginType        String?        @default("email")
