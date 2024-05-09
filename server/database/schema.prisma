@@ -26,6 +26,7 @@ model User {
   answers          Answer[]
   stripeCustomerId String?
   Subscription     Subscription[]
+  insuranceSales   InsuranceSales[]
 }
 
 model InsuranceSales {
