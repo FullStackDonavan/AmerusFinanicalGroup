@@ -39,7 +39,6 @@ model InsuranceSales {
   product     String
   policyYear  Int
   price       Decimal
-  answers     Answer[]
 }
 
 model Session {
