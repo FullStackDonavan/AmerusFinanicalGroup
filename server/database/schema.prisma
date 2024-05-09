@@ -37,9 +37,9 @@ model InsuranceSales {
   sellerId    Int
   carrier     String
   product     String
+  policyYear  Int
+  price       Decimal
   answers     Answer[]
-
-
 }
 
 model Session {
