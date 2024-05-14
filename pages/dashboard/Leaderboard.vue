@@ -14,6 +14,7 @@ import Tiptap from "~~/components/elements/Tiptap.vue";
         >
           Leaderboard
         </h1>
+        <Leaderboard />
       </div>
     </div>
   </PatternSection>
