@@ -1,36 +1,42 @@
 <template>
-  <BasicSection>
-    <table class="leaderboard border-collapse border border-gray-400">
+  <BasicSection class="mx-4">
+    <table class="w-full table-fixed border-collapse border border-gray-400">
       <thead>
-        <tr class="header">
-          <th class="rank">Rank</th>
-          <th class="name">Name</th>
-          <th class="score">Score</th>
+        <tr class="bg-blue-500 text-white">
+          <th class="w-1/4 py-2 px-4 text-left">Rank</th>
+          <th class="w-1/2 py-2 px-4 text-left">Name</th>
+          <th class="w-1/4 py-2 px-4 text-left">Score</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="row">
-          <td class="rank">1</td>
-          <td class="name">John Doe</td>
-          <td class="score">1000</td>
+        <!-- Use v-for on tr -->
+        <tr
+          class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
+        >
+          <td class="py-2 px-4">1</td>
+          <td class="py-2 px-4">Donavan Jones</td>
+          <td class="py-2 px-4">1000</td>
         </tr>
-        <tr class="row">
-          <td class="rank">2</td>
-          <td class="name">Jane Smith</td>
-          <td class="score">950</td>
+        <tr
+          class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
+        >
+          <td class="py-2 px-4">2</td>
+          <td class="py-2 px-4">Tim Baggett</td>
+          <td class="py-2 px-4">950</td>
         </tr>
-        <tr class="row">
-          <td class="rank">3</td>
-          <td class="name">Alice Johnson</td>
-          <td class="score">900</td>
+        <tr
+          class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
+        >
+          <td class="py-2 px-4">3</td>
+          <td class="py-2 px-4">Rudolf G</td>
+          <td class="py-2 px-4">900</td>
         </tr>
-        <!-- Add more rows as needed -->
       </tbody>
     </table>
   </BasicSection>
 </template>
-
-<style scoped>
+  
+  <style scoped>
 /* Optional custom styles */
 .leaderboard {
   max-width: 600px;
@@ -63,7 +69,8 @@
   width: 200px;
 }
 
-.leaderboard .score {
+.leaderboard .ytd {
   width: 100px;
 }
 </style>
+  

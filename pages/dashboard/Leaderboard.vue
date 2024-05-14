@@ -8,9 +8,9 @@ import Tiptap from "~~/components/elements/Tiptap.vue";
   <PatternSection>
     <div class="md:flex min-h-full">
       <DashboardSidebar />
-      <div class="container md:w-1/3 z-1 flex justify-right relative">
+      <div class="container z-1 justify-right relative">
         <h1
-          class="py-9 text-center text-5xl font-extrabold text-gray-900 dark:text-gray-400 ml-4"
+          class="py-9 text-center text-5xl font-extrabold text-gray-900 dark:text-gray-400"
         >
           Leaderboard
         </h1>
