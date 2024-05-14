@@ -1,31 +1,33 @@
 <template>
-  <table class="leaderboard border-collapse border border-gray-400">
-    <thead>
-      <tr class="header">
-        <th class="rank">Rank</th>
-        <th class="name">Name</th>
-        <th class="score">Score</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="row">
-        <td class="rank">1</td>
-        <td class="name">John Doe</td>
-        <td class="score">1000</td>
-      </tr>
-      <tr class="row">
-        <td class="rank">2</td>
-        <td class="name">Jane Smith</td>
-        <td class="score">950</td>
-      </tr>
-      <tr class="row">
-        <td class="rank">3</td>
-        <td class="name">Alice Johnson</td>
-        <td class="score">900</td>
-      </tr>
-      <!-- Add more rows as needed -->
-    </tbody>
-  </table>
+  <BasicSection>
+    <table class="leaderboard border-collapse border border-gray-400">
+      <thead>
+        <tr class="header">
+          <th class="rank">Rank</th>
+          <th class="name">Name</th>
+          <th class="score">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row">
+          <td class="rank">1</td>
+          <td class="name">John Doe</td>
+          <td class="score">1000</td>
+        </tr>
+        <tr class="row">
+          <td class="rank">2</td>
+          <td class="name">Jane Smith</td>
+          <td class="score">950</td>
+        </tr>
+        <tr class="row">
+          <td class="rank">3</td>
+          <td class="name">Alice Johnson</td>
+          <td class="score">900</td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
+    </table>
+  </BasicSection>
 </template>
 
 <style scoped>
