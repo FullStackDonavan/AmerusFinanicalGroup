@@ -9,7 +9,7 @@ const {
   pending,
   refresh,
   error,
-} = await useFetch<IQuestion[]>(
+} = await useFetch<IInsuranceSales[]>(
   () => `/api/dashboard/search?search=${searchInput.value}`,
   { server: false }
 );
