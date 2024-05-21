@@ -1,17 +1,4 @@
 <script setup lang="ts">
-interface IInsuranceSales {
-  id?: number;
-  seller: string;
-  firstName: string;
-  lastName: string;
-  sellerId: number;
-  carrier: string;
-  product: string;
-  category: string;
-  policyYear: number;
-  price: number;
-}
-
 const searchInput = ref("");
 
 const {
