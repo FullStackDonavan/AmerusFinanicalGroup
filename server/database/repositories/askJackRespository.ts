@@ -11,9 +11,8 @@ export async function createQuestion(data: IQuestionPost, authorId: number) {
 }
 
 export async function createInsuranceSales(data: IInsuranceSalesPost, sellerId: number) {
-  return await prisma.InsuranceSales.create({
+  return await prisma.insuranceSales.create({
     data: {
-      seller: String,
       firstName: data.firstName,
       lastName: data.lastName,
       sellerId: sellerId,

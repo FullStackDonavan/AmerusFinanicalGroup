@@ -1,12 +1,12 @@
 type IInsuranceSalesPost = {
  id?: number
- seller: String;
- firstName: String;
- lastName: String;
+ seller: string;
+ firstName: string;
+ lastName: string;
  sellerId: number;
- carrier: String;
- product: String;
- category: String;
+ carrier: string;
+ product: string;
+ category: string;
  policyYear: number;
  price: number;
 };
