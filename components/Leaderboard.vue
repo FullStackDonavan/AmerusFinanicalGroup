@@ -41,7 +41,7 @@ export default {
   async fetch() {
     this.pending = true;
     try {
-      const response = await this.$axios.$get("/api/dashboard/search", {
+      const response = await this.$axios.$get("/api/dashboard/sales", {
         params: { search: this.searchInput },
       });
       this.insuranceSales = response.data; // Adjust response structure based on your API
