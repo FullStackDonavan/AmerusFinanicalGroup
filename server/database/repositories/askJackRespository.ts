@@ -10,6 +10,22 @@ export async function createQuestion(data: IQuestionPost, authorId: number) {
   })
 }
 
+export async function createInsuranceSales(data: IInsuranceSalesPost, sellerId: number) {
+  return await prisma.InsuranceSales.create({
+    data: {
+      seller: String,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      sellerId: sellerId,
+      carrier: data.carrier,
+      product: data.product,
+      category: data.category,
+      policyYear: data.policyYear,
+      price: data.price,
+    }
+  })
+}
+
 export async function findQuestion(id: number): Promise<IQuestion> {
   return await prisma.question.findUnique({
     where: {
