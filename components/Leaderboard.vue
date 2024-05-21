@@ -1,16 +1,3 @@
-<script setup lang="ts">
-const searchInput = ref("");
-
-const {
-  data: insuranceSales,
-  pending,
-  error,
-} = await useFetch<IInsuranceSales[]>(
-  () => `/api/dashboard/search?search=${searchInput.value}`,
-  { server: false }
-);
-</script>
-
 <template>
   <BasicSection class="mx-4">
     <table class="w-full table-fixed border-collapse border border-gray-400">
@@ -42,6 +29,30 @@ const {
     </table>
   </BasicSection>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      insuranceSales: [],
+      pending: false,
+    };
+  },
+  async fetch() {
+    this.pending = true;
+    try {
+      const response = await this.$axios.$get("/api/dashboard/search", {
+        params: { search: this.searchInput },
+      });
+      this.insuranceSales = response.data; // Adjust response structure based on your API
+    } catch (error) {
+      console.error("Error fetching insurance sales:", error);
+    } finally {
+      this.pending = false;
+    }
+  },
+};
+</script>
 
 <style scoped>
 /* Optional custom styles */
