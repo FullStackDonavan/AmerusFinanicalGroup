@@ -78,7 +78,9 @@ export async function editQuestion(question: IQuestionPost) {
     },
   })
 
-} export async function deleteQuestion(questionId: number) {
+} 
+
+export async function deleteQuestion(questionId: number) {
   return await prisma.question.delete({
     where: {
       id: questionId,
