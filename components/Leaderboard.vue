@@ -9,39 +9,6 @@ const {
   () => `/api/dashboard/search?search=${searchInput.value}`,
   { server: false }
 );
-
-watch(searchInput, () => {
-  if (searchInput.value.length >= 3) {
-    refresh();
-  }
-});
-
-// Compute the scores for each seller
-const scores = computed(() => {
-  const sellerScores: Record<
-    string,
-    { firstName: string; lastName: string; score: number }
-  > = {};
-
-  if (insuranceSales.value) {
-    insuranceSales.value.forEach((sale) => {
-      const { sellerId, firstName, lastName, price } = sale;
-      if (!sellerScores[sellerId]) {
-        sellerScores[sellerId] = { firstName, lastName, score: 0 };
-      }
-      sellerScores[sellerId].score += price; // Summing up the sales prices for each seller
-    });
-  }
-
-  return Object.entries(sellerScores)
-    .map(([sellerId, { firstName, lastName, score }]) => ({
-      sellerId,
-      firstName,
-      lastName,
-      score,
-    }))
-    .sort((a, b) => b.score - a.score); // Sort by score in descending order
-});
 </script>
 
 <template>
@@ -51,25 +18,25 @@ const scores = computed(() => {
         <tr class="bg-blue-500 text-white">
           <th class="w-1/4 py-2 px-4 text-left">Rank</th>
           <th class="w-1/2 py-2 px-4 text-left">Name</th>
-          <th class="w-1/4 py-2 px-4 text-left">Score</th>
+          <th class="w-1/4 py-2 px-4 text-left">Price</th>
         </tr>
       </thead>
-      <tbody v-if="!pending">
+      <tbody v-if="!pending && insuranceSales && insuranceSales.length">
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-          v-for="(score, index) in scores"
-          :key="score.sellerId"
+          v-for="(sale, index) in insuranceSales"
+          :key="sale.id || index"
         >
           <td class="py-2 px-4">{{ index + 1 }}</td>
-          <td class="py-2 px-4">
-            {{ score.firstName + " " + score.lastName }}
-          </td>
-          <td class="py-2 px-4">{{ score.score }}</td>
+          <td class="py-2 px-4">{{ sale.firstName }} {{ sale.lastName }}</td>
+          <td class="py-2 px-4">{{ sale.price }}</td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td class="py-2 px-4" colspan="3">Loading...</td>
+          <td colspan="3" class="py-2 px-4 text-center">
+            No insurance sales data available
+          </td>
         </tr>
       </tbody>
     </table>
@@ -77,6 +44,7 @@ const scores = computed(() => {
 </template>
 
 <style scoped>
+/* Optional custom styles */
 .leaderboard {
   max-width: 600px;
   margin: 0 auto;
