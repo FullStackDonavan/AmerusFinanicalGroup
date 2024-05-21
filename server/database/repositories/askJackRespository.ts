@@ -38,7 +38,7 @@ export async function findQuestion(id: number): Promise<IQuestion> {
 
 
 
-export async function searchInsuranceSales(id: number): Promise<IInsuranceSales> {
+export async function findInsuranceSales(id: number): Promise<IInsuranceSales> {
   return await prisma.insuranceSales.findUnique({
     where: {
       id: id,
