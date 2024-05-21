@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useFetch } from "@vueuse/core";
-import BasicSection from "~~/components/elements/BasicSection.vue";
-
 interface IInsuranceSales {
   id?: number;
   seller: string;
