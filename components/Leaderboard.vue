@@ -5,22 +5,13 @@ import User from "./User.vue";
 const searchInput = ref("");
 
 const {
-  data: InsuranceSales,
+  data: insuranceSales,
   pending,
-  refresh,
   error,
 } = await useFetch<IInsuranceSales[]>(
   () => `/api/dashboard/search?search=${searchInput.value}`,
   { server: false }
 );
-
-refresh();
-
-function search() {
-  if (searchInput.value.length >= 3) {
-    refresh();
-  }
-}
 </script>
 
 <template>
@@ -37,7 +28,7 @@ function search() {
         <!-- Use v-for on tr -->
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-          v-for="InsuranceSale in InsuranceSales"
+          v-for="InsuranceSale in insuranceSales"
           :key="InsuranceSale.id"
         >
           <td class="py-2 px-4">1</td>
