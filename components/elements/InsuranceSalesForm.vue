@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useFetch } from "vue-composable";
+
 definePageMeta({
   middleware: "auth",
 });
@@ -19,8 +23,20 @@ const products = {
   "Carrier 3": ["Product E", "Product F"],
 };
 
+const categories = {
+  "Product A": "Category X",
+  "Product B": "Category Y",
+  "Product C": "Category Z",
+  // Define more mappings as needed
+};
+
 const filteredProducts = computed(() => {
   return products[data.value.carrier] || [];
+});
+
+const productCategories = computed(() => {
+  const selectedProduct = data.value.product;
+  return selectedProduct ? categories[selectedProduct] : "";
 });
 
 async function postInsuranceSales() {
@@ -32,6 +48,7 @@ async function postInsuranceSales() {
   router.push(`/dashboard/question/${question.value.id}`);
 }
 </script>
+
 
 
 <template>
@@ -112,23 +129,6 @@ async function postInsuranceSales() {
           {{ product }}
         </option>
       </select>
-    </div>
-
-    <div class="mb-6">
-      <label
-        for="category"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-      >
-        Category
-      </label>
-      <input
-        v-model="data.category"
-        type="text"
-        id="category"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-        placeholder="Category"
-        required
-      />
     </div>
 
     <div class="mb-6">
