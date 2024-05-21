@@ -36,9 +36,12 @@ const productCategories = computed(() => {
 });
 
 async function postInsuranceSales() {
+  const category = productCategories.value; // Compute the category based on the selected product
+  const postData = { ...data.value, category }; // Combine existing data with category
+
   const { data: question } = await useFetch<IInsuranceSales>(
     () => `${props.endpoint}`,
-    { method: "post", body: { data: data.value }, pick: ["id"] }
+    { method: "post", body: { data: postData }, pick: ["id"] }
   );
 
   router.push(`/dashboard/question/${question.value.id}`);
