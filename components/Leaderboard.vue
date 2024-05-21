@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import Tiptap from "~~/components/elements/Tiptap.vue";
+import User from "./User.vue";
+
+const searchInput = ref("");
+
+const {
+  data: InsuranceSales,
+  pending,
+  refresh,
+  error,
+} = await useFetch<IQuestion[]>(
+  () => `/api/dashboard/search?search=${searchInput.value}`,
+  { server: false }
+);
+
+refresh();
+
+function search() {
+  if (searchInput.value.length >= 3) {
+    refresh();
+  }
+}
+</script>
+
 <template>
   <BasicSection class="mx-4">
     <table class="w-full table-fixed border-collapse border border-gray-400">
@@ -8,28 +33,18 @@
           <th class="w-1/4 py-2 px-4 text-left">Score</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="!pending">
         <!-- Use v-for on tr -->
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
+          v-for="InsuranceSale in InsuranceSales"
+          :key="InsuranceSale.id"
         >
           <td class="py-2 px-4">1</td>
-          <td class="py-2 px-4">Donavan Jones</td>
+          <td class="py-2 px-4">
+            {{ User.firstName + " " + User.lastName }}
+          </td>
           <td class="py-2 px-4">1000</td>
-        </tr>
-        <tr
-          class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-        >
-          <td class="py-2 px-4">2</td>
-          <td class="py-2 px-4">Tim Baggett</td>
-          <td class="py-2 px-4">950</td>
-        </tr>
-        <tr
-          class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-        >
-          <td class="py-2 px-4">3</td>
-          <td class="py-2 px-4">Rudolf G</td>
-          <td class="py-2 px-4">900</td>
         </tr>
       </tbody>
     </table>
