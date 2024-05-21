@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Tiptap from "~~/components/elements/Tiptap.vue";
-import User from "./User.vue";
+import { ref, computed } from "vue";
+import { useFetch } from "vue-composable";
+import User from "./User.vue"; // Assuming this component provides user details
 
 const searchInput = ref("");
 
@@ -21,6 +22,40 @@ function search() {
     refresh();
   }
 }
+
+// Compute the scores for each user
+const scores = computed(() => {
+  const userScores: Record<string, number> = {};
+
+  if (InsuranceSales.value) {
+    InsuranceSales.value.forEach((sale) => {
+      if (!userScores[sale.userId]) {
+        userScores[sale.userId] = 0;
+      }
+      userScores[sale.userId] += sale.price; // Assuming 'price' is the sales value
+    });
+  }
+
+  return Object.entries(userScores).map(([userId, score]) => ({
+    userId,
+    score,
+  }));
+});
+
+// Get user information (e.g., firstName, lastName) for each score entry
+const users = ref<User[]>([]); // Assuming you have a way to fetch user data
+
+// Fetch user information for each unique userId in scores
+async function fetchUserDetails() {
+  const uniqueUserIds = scores.value.map((score) => score.userId);
+  // Assuming you have an API endpoint to fetch user details by their IDs
+  const { data: userData } = await useFetch<User[]>(
+    () => `/api/users?ids=${uniqueUserIds.join(",")}`
+  );
+  users.value = userData.value || [];
+}
+
+fetchUserDetails();
 </script>
 
 <template>
@@ -72,24 +107,31 @@ function search() {
         </tr>
       </thead>
       <tbody v-if="!pending">
-        <!-- Use v-for on tr -->
         <tr
+          v-for="(score, index) in scores"
+          :key="score.userId"
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-          v-for="InsuranceSale in InsuranceSales"
-          :key="InsuranceSale.id"
         >
-          <td class="py-2 px-4">1</td>
+          <td class="py-2 px-4">{{ index + 1 }}</td>
           <td class="py-2 px-4">
-            {{ User.firstName + " " + User.lastName }}
+            <!-- Assuming you have a method to find user details by userId -->
+            {{ getUserFullName(score.userId) }}
           </td>
-          <td class="py-2 px-4">1000</td>
+          <td class="py-2 px-4">{{ score.score }}</td>
         </tr>
       </tbody>
     </table>
   </BasicSection>
 </template>
-  
-  <style scoped>
+
+<script setup lang="ts">
+function getUserFullName(userId: string): string {
+  const user = users.value.find((user) => user.id === userId);
+  return user ? `${user.firstName} ${user.lastName}` : "Unknown User";
+}
+</script>
+
+<style scoped>
 /* Optional custom styles */
 .leaderboard {
   max-width: 600px;
@@ -126,4 +168,3 @@ function search() {
   width: 100px;
 }
 </style>
-  
