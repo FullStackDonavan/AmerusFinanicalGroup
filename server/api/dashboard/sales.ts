@@ -11,6 +11,6 @@ export default eventHandler(async (event) => {
         insuranceSale.authName = '@' + user.username; // Assuming username is a property of the user object
         return insuranceSale;
     }));
-
+    console.log("Response from API:", response);
     return insuranceSalesWithAuth;
 });
