@@ -1,6 +1,20 @@
 <script setup lang="ts">
-import Tiptap from "~~/components/elements/Tiptap.vue";
-import User from "./User.vue";
+import { ref, computed, watch } from "vue";
+import { useFetch } from "@vueuse/core";
+import BasicSection from "~~/components/elements/BasicSection.vue";
+
+interface IInsuranceSales {
+  id?: number;
+  seller: string;
+  firstName: string;
+  lastName: string;
+  sellerId: number;
+  carrier: string;
+  product: string;
+  category: string;
+  policyYear: number;
+  price: number;
+}
 
 const searchInput = ref("");
 
@@ -12,6 +26,39 @@ const {
   () => `/api/dashboard/search?search=${searchInput.value}`,
   { server: false }
 );
+
+watch(searchInput, () => {
+  if (searchInput.value.length >= 3) {
+    refresh();
+  }
+});
+
+// Compute the scores for each seller
+const scores = computed(() => {
+  const sellerScores: Record<
+    string,
+    { firstName: string; lastName: string; score: number }
+  > = {};
+
+  if (insuranceSales.value) {
+    insuranceSales.value.forEach((sale) => {
+      const { sellerId, firstName, lastName, price } = sale;
+      if (!sellerScores[sellerId]) {
+        sellerScores[sellerId] = { firstName, lastName, score: 0 };
+      }
+      sellerScores[sellerId].score += price; // Summing up the sales prices for each seller
+    });
+  }
+
+  return Object.entries(sellerScores)
+    .map(([sellerId, { firstName, lastName, score }]) => ({
+      sellerId,
+      firstName,
+      lastName,
+      score,
+    }))
+    .sort((a, b) => b.score - a.score); // Sort by score in descending order
+});
 </script>
 
 <template>
@@ -25,25 +72,28 @@ const {
         </tr>
       </thead>
       <tbody v-if="!pending">
-        <!-- Use v-for on tr -->
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-          v-for="InsuranceSale in insuranceSales"
-          :key="InsuranceSale.id"
+          v-for="(score, index) in scores"
+          :key="score.sellerId"
         >
-          <td class="py-2 px-4">1</td>
+          <td class="py-2 px-4">{{ index + 1 }}</td>
           <td class="py-2 px-4">
-            {{ InsuranceSale.firstName + " " + InsuranceSale.lastName }}
+            {{ score.firstName + " " + score.lastName }}
           </td>
-          <td class="py-2 px-4">{{ InsuranceSale.price }}</td>
+          <td class="py-2 px-4">{{ score.score }}</td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr>
+          <td class="py-2 px-4" colspan="3">Loading...</td>
         </tr>
       </tbody>
     </table>
   </BasicSection>
 </template>
-  
-  <style scoped>
-/* Optional custom styles */
+
+<style scoped>
 .leaderboard {
   max-width: 600px;
   margin: 0 auto;
@@ -79,4 +129,3 @@ const {
   width: 100px;
 }
 </style>
-  
