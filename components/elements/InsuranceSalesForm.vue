@@ -75,8 +75,8 @@ const categories = {
   "Product Y": "Health",
   "Product Z": "Life",
   "Product AA": "Health",
-  "Product BB": "Life",
-  "Product CC": "Health",
+  "Product BB": "Medicare",
+  "Product CC": "Medicare",
   // Define more mappings as needed
 };
 
