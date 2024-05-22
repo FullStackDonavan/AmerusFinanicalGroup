@@ -36,6 +36,8 @@
 </template>
 
 <script setup>
+import { getUserById } from "~/server/database/repositories/userRepository";
+
 const isLoading = ref(false);
 const insuranceSales = ref([]);
 
