@@ -48,12 +48,6 @@ export async function getUserById(id: number) {
     where: {
       id: id,
     },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      stripeCustomerId: true,
-    },
   })
 }
 

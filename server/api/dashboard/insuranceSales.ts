@@ -1,4 +1,5 @@
 
+// server/api/dashboard/insuranceSales.js
 import prisma from '~/server/database/client';
 
 export default defineEventHandler(async (event) => {

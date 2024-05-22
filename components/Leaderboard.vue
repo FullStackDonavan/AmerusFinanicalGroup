@@ -46,27 +46,42 @@ onMounted(async () => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    const data = await response.json();
+    const responseData = await response.json();
 
-    const salesBySeller = data.reduce((acc, sale) => {
-      if (!acc[sale.sellerId]) {
-        acc[sale.sellerId] = [];
+    if (!responseData.success) {
+      throw new Error(responseData.error || "Failed to fetch insurance sales");
+    }
+
+    const data = responseData.data;
+    if (!Array.isArray(data)) {
+      throw new Error("Invalid data format received from API");
+    }
+
+    // Group sales by sellerId
+    const salesBySeller = {};
+    for (const sale of data) {
+      const sellerId = sale.sellerId;
+      if (!salesBySeller[sellerId]) {
+        salesBySeller[sellerId] = [];
       }
-      acc[sale.sellerId].push(sale);
-      return acc;
-    }, {});
+      salesBySeller[sellerId].push(sale);
+    }
 
-    const sellerIds = Object.keys(salesBySeller);
-    for (const sellerId of sellerIds) {
+    // Fetch and merge seller details with sales data
+    const salesWithSellerNames = [];
+    for (const sellerId in salesBySeller) {
       const sellerDetails = await getUserById(parseInt(sellerId));
       if (sellerDetails) {
-        const salesWithSellerName = salesBySeller[sellerId].map((sale) => ({
+        const salesForSeller = salesBySeller[sellerId].map((sale) => ({
           ...sale,
           sellerName: `${sellerDetails.firstName} ${sellerDetails.lastName}`,
         }));
-        insuranceSales.value.push(...salesWithSellerName);
+        salesWithSellerNames.push(...salesForSeller);
       }
     }
+
+    // Assign the processed sales data to the reactive variable
+    insuranceSales.value = salesWithSellerNames;
   } catch (error) {
     console.error("Error fetching insurance sales:", error);
   } finally {
@@ -74,7 +89,6 @@ onMounted(async () => {
   }
 });
 </script>
-
 
 <style scoped>
 /* Optional custom styles */
