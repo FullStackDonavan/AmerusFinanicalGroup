@@ -5,6 +5,20 @@ import DashboardSidebar from "~~/components/elements/DashboardSidebar.vue";
 import PipelineHeader from "~~/components/dashboard/PipelineHeader.vue"; // Add this line
 import Tiptap from "~~/components/elements/Tiptap.vue";
 
+const data: IInsuranceSalesPost = reactive({
+  seller: "",
+  firstName: "",
+  lastName: "",
+  sellerId: 0,
+  carrier: "",
+  product: "",
+  category: "",
+  policyYear: 0,
+  price: 0,
+});
+
+const endpoint = "/api/dashboard/reportInsuranceSales";
+
 // definePageMeta({
 //   middleware: "auth",
 // });
