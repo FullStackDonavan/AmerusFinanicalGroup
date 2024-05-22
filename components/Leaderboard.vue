@@ -36,47 +36,38 @@
 </template>
 
 <script setup>
-import { getUserById } from "~/server/database/repositories/userRespository";
+import { getUserById } from "~/server/database/repositories/userRepository";
 
-// Define reactive variables
 const isLoading = ref(false);
 const insuranceSales = ref([]);
 
-// Fetch data using useFetch hook
-useFetch(async () => {
+onMounted(async () => {
   isLoading.value = true;
   try {
-    // Fetch insurance sales data
     const response = await fetch("/api/dashboard/insuranceSales");
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
 
-    // Group sales by sellerId
-    const salesBySeller = {};
-    for (const sale of data) {
-      const sellerId = sale.sellerId;
-      if (!salesBySeller[sellerId]) {
-        salesBySeller[sellerId] = [];
+    const salesBySeller = data.reduce((acc, sale) => {
+      if (!acc[sale.sellerId]) {
+        acc[sale.sellerId] = [];
       }
-      salesBySeller[sellerId].push(sale);
-    }
+      acc[sale.sellerId].push(sale);
+      return acc;
+    }, {});
 
-    // Fetch and merge seller details with sales data
     const sellerIds = Object.keys(salesBySeller);
     for (const sellerId of sellerIds) {
-      // Fetch seller details from user repository
       const sellerDetails = await getUserById(parseInt(sellerId));
-
-      // Merge seller name with each sale
-      const salesWithSellerName = salesBySeller[sellerId].map((sale) => ({
-        ...sale,
-        sellerName: `${sellerDetails.firstName} ${sellerDetails.lastName}`,
-      }));
-
-      // Push sales with seller name to insuranceSales array
-      insuranceSales.value.push(...salesWithSellerName);
+      if (sellerDetails) {
+        const salesWithSellerName = salesBySeller[sellerId].map((sale) => ({
+          ...sale,
+          sellerName: `${sellerDetails.firstName} ${sellerDetails.lastName}`,
+        }));
+        insuranceSales.value.push(...salesWithSellerName);
+      }
     }
   } catch (error) {
     console.error("Error fetching insurance sales:", error);
