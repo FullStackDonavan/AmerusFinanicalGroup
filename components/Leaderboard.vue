@@ -31,8 +31,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-
 const isLoading = ref(false);
 const insuranceSales = ref([]);
 
