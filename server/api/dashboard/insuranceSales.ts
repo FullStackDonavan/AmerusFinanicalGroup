@@ -1,6 +1,6 @@
 
 import prisma from '~/server/database/client';
-import { getUserById } from '~/server/database/repositories/userRepository';
+import { getUserById } from '~/server/database/repositories/userRespository';
 
 export default defineEventHandler(async (event) => {
   try {
