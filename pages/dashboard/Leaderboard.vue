@@ -17,6 +17,7 @@ import Tiptap from "~~/components/elements/Tiptap.vue";
         <Leaderboard />
         <HealthLeaderboard />
         <LifeLeaderboard />
+        <MedicareLeaderboard />
       </div>
     </div>
   </PatternSection>
