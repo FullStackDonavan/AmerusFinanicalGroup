@@ -17,6 +17,8 @@ export default defineEventHandler(async (event) => {
       },
     });
 
+    console.log('Health insurance sales:', healthInsuranceSales); // Log fetched data
+
     // Group and aggregate sales by sellerId
     const salesBySeller = healthInsuranceSales.reduce((acc, sale) => {
       const sellerId = sale.sellerId;
@@ -27,12 +29,16 @@ export default defineEventHandler(async (event) => {
       return acc;
     }, {});
 
+    console.log('Sales by seller:', salesBySeller); // Log grouped sales
+
     // Fetch seller name from healthInsuranceSales and merge with aggregated sales data
     const salesWithSellerNames = [];
     for (const sellerId in salesBySeller) {
       const sellerSales = salesBySeller[sellerId];
       const seller = healthInsuranceSales.find(sale => sale.sellerId === parseInt(sellerId))?.seller;
+      console.log('Seller:', seller); // Log seller data
       const sellerName = seller ? `${seller.firstName} ${seller.lastName}` : 'Unknown';
+      console.log('Seller name:', sellerName); // Log seller name
       const sellerSalesWithName = {
         ...sellerSales,
         sellerName,
