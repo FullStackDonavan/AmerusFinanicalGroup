@@ -8,7 +8,7 @@
           <th class="w-1/4 py-2 px-4 text-left">Price</th>
         </tr>
       </thead>
-      <tbody v-if="!pending && insuranceSales && InsuranceSales.length">
+      <tbody v-if="!pending && insuranceSales && insuranceSales.length">
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
           v-for="(sale, index) in insuranceSales"
