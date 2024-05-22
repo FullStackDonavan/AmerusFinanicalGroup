@@ -5,18 +5,18 @@
         <tr class="bg-blue-500 text-white">
           <th class="w-1/4 py-2 px-4 text-left">Rank</th>
           <th class="w-1/2 py-2 px-4 text-left">Name</th>
-          <th class="w-1/4 py-2 px-4 text-left">Price</th>
+          <th class="w-1/4 py-2 px-4 text-left">Total Sales</th>
         </tr>
       </thead>
       <tbody v-if="!isLoading && insuranceSales.length">
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
           v-for="(sale, index) in insuranceSales"
-          :key="sale.id || index"
+          :key="sale.sellerId"
         >
           <td class="py-2 px-4">{{ index + 1 }}</td>
           <td class="py-2 px-4">{{ sale.sellerName }}</td>
-          <td class="py-2 px-4">{{ sale.price }}</td>
+          <td class="py-2 px-4">{{ sale.totalSales }}</td>
         </tr>
       </tbody>
       <tbody v-else>
@@ -62,3 +62,42 @@ onMounted(async () => {
   }
 });
 </script>
+
+
+<style scoped>
+/* Optional custom styles */
+.leaderboard {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.leaderboard .header {
+  background-color: #4c51bf;
+  color: #fff;
+}
+
+.leaderboard .header th {
+  padding: 10px;
+  text-align: left;
+}
+
+.leaderboard .row:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+.leaderboard .row:hover {
+  background-color: #e2e8f0;
+}
+
+.leaderboard .rank {
+  width: 50px;
+}
+
+.leaderboard .name {
+  width: 200px;
+}
+
+.leaderboard .ytd {
+  width: 100px;
+}
+</style>

@@ -1,4 +1,3 @@
-
 import prisma from '~/server/database/client';
 import { getUserById } from '~/server/database/repositories/userRespository';
 
@@ -7,26 +6,25 @@ export default defineEventHandler(async (event) => {
     // Fetch all insurance sales
     const insuranceSales = await prisma.insuranceSales.findMany();
 
-    // Group sales by sellerId
-    const salesBySeller: { [key: number]: any[] } = {};
-    for (const sale of insuranceSales) {
+    // Group and aggregate sales by sellerId
+    const salesBySeller = insuranceSales.reduce((acc, sale) => {
       const sellerId = sale.sellerId;
-      if (!salesBySeller[sellerId]) {
-        salesBySeller[sellerId] = [];
+      if (!acc[sellerId]) {
+        acc[sellerId] = { totalSales: 0, sellerId };
       }
-      salesBySeller[sellerId].push(sale);
-    }
+      acc[sellerId].totalSales += sale.price.toNumber(); // Ensure price is a number
+      return acc;
+    }, {});
 
-    // Fetch and merge seller details with sales data
+    // Fetch and merge seller details with aggregated sales data
     const salesWithSellerNames = [];
     for (const sellerId in salesBySeller) {
       const sellerDetails = await getUserById(parseInt(sellerId));
       if (sellerDetails) {
-        const salesForSeller = salesBySeller[sellerId].map((sale) => ({
-          ...sale,
+        salesWithSellerNames.push({
+          ...salesBySeller[sellerId],
           sellerName: `${sellerDetails.firstName} ${sellerDetails.lastName}`,
-        }));
-        salesWithSellerNames.push(...salesForSeller);
+        });
       }
     }
 
