@@ -35,38 +35,62 @@
   </BasicSection>
 </template>
 
-<script>
-export default {
-  setup() {
-    const isLoading = ref(false); // Flag to indicate loading state
-    const insuranceSales = ref([]); // Store fetched data
+<script setup>
+import { ref, onMounted } from "vue";
+import { useFetch } from "@nuxtjs/use-fetch";
 
-    // Fetch data using useFetch
-    useFetch(async () => {
-      isLoading.value = true; // Set loading flag
-      try {
-        // Fetch data from the API endpoint
-        const response = await fetch("/api/dashboard/insuranceSales");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        // Parse response as JSON
-        const data = await response.json();
-        // Update component data with fetched data
-        insuranceSales.value = data;
-      } catch (error) {
-        // Handle error if fetching data fails
-        console.error("Error fetching insurance sales:", error);
-      } finally {
-        // Reset loading flag regardless of success or failure
-        isLoading.value = false;
+// Define reactive variables
+const isLoading = ref(false);
+const insuranceSales = ref([]);
+
+// Fetch data using useFetch hook
+useFetch(async () => {
+  isLoading.value = true;
+  try {
+    // Fetch insurance sales data
+    const response = await fetch("/api/dashboard/insuranceSales");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    // Group sales by sellerId
+    const salesBySeller = {};
+    for (const sale of data) {
+      const sellerId = sale.sellerId;
+      if (!salesBySeller[sellerId]) {
+        salesBySeller[sellerId] = [];
       }
-    });
+      salesBySeller[sellerId].push(sale);
+    }
 
-    return { isLoading, insuranceSales };
-  },
-};
+    // Fetch seller names and merge with sales data
+    const sellerIds = Object.keys(salesBySeller);
+    for (const sellerId of sellerIds) {
+      // Fetch seller details from user table
+      const sellerResponse = await fetch(`/api/users/${sellerId}`);
+      if (!sellerResponse.ok) {
+        throw new Error(`HTTP error! Status: ${sellerResponse.status}`);
+      }
+      const sellerData = await sellerResponse.json();
+
+      // Merge seller name with each sale
+      const salesWithSellerName = salesBySeller[sellerId].map((sale) => ({
+        ...sale,
+        sellerName: `${sellerData.firstName} ${sellerData.lastName}`,
+      }));
+
+      // Push sales with seller name to insuranceSales array
+      insuranceSales.value.push(...salesWithSellerName);
+    }
+  } catch (error) {
+    console.error("Error fetching insurance sales:", error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
+
 
 <style scoped>
 /* Optional custom styles */
