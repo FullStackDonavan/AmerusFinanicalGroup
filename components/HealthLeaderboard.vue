@@ -35,9 +35,7 @@ const leaderboardData = ref([]);
 onMounted(async () => {
   isLoading.value = true;
   try {
-    const response = await fetch(
-      "/api/dashboard/healthInsuranceSalesLeaderboard"
-    );
+    const response = await fetch("/api/dashboard/healthInsuranceSales");
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
