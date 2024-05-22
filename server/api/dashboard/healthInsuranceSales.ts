@@ -3,28 +3,45 @@ import { getUserById } from '~/server/database/repositories/userRespository';
 
 export default defineEventHandler(async (event) => {
   try {
-    // Fetch all insurance sales with the "Health" category
+    // Fetch all health insurance sales
     const healthInsuranceSales = await prisma.insuranceSales.findMany({
       where: {
         category: 'Health',
       },
     });
 
-    // Fetch and merge seller details with sales data
-    const salesWithSellerNames = [];
+    // Aggregate total sales for each user
+    const salesByUser = {};
     for (const sale of healthInsuranceSales) {
-      const sellerDetails = await getUserById(sale.sellerId);
-      if (sellerDetails) {
-        salesWithSellerNames.push({
-          ...sale,
-          sellerName: `${sellerDetails.firstName} ${sellerDetails.lastName}`,
+      if (!salesByUser[sale.sellerId]) {
+        salesByUser[sale.sellerId] = {
+          userId: sale.sellerId,
+          totalSales: sale.price,
+        };
+      } else {
+        salesByUser[sale.sellerId].totalSales += sale.price;
+      }
+    }
+
+    // Fetch user details and merge with aggregated sales
+    const leaderboardData = [];
+    for (const userId of Object.keys(salesByUser)) {
+      const userSales = salesByUser[userId];
+      const user = await getUserById(userId);
+      if (user) {
+        leaderboardData.push({
+          ...user,
+          totalSales: userSales.totalSales,
         });
       }
     }
 
+    // Sort leaderboard data by total sales in descending order
+    leaderboardData.sort((a, b) => b.totalSales - a.totalSales);
+
     return {
       success: true,
-      data: salesWithSellerNames,
+      data: leaderboardData,
     };
   } catch (error) {
     console.error('Error fetching health insurance sales:', error);

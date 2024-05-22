@@ -5,25 +5,23 @@
         <tr class="bg-blue-500 text-white">
           <th class="w-1/4 py-2 px-4 text-left">Rank</th>
           <th class="w-1/2 py-2 px-4 text-left">Name</th>
-          <th class="w-1/4 py-2 px-4 text-left">Price</th>
+          <th class="w-1/4 py-2 px-4 text-left">Total Sales</th>
         </tr>
       </thead>
-      <tbody v-if="!isLoading && healthInsuranceSales.length">
+      <tbody v-if="!isLoading && leaderboardData.length">
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-          v-for="(sale, index) in healthInsuranceSales"
-          :key="sale.id"
+          v-for="(user, index) in leaderboardData"
+          :key="user.id"
         >
           <td class="py-2 px-4">{{ index + 1 }}</td>
-          <td class="py-2 px-4">{{ sale.sellerName }}</td>
-          <td class="py-2 px-4">{{ sale.price }}</td>
+          <td class="py-2 px-4">{{ user.firstName }} {{ user.lastName }}</td>
+          <td class="py-2 px-4">{{ user.totalSales }}</td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="3" class="py-2 px-4 text-center">
-            No health insurance sales data available
-          </td>
+          <td colspan="3" class="py-2 px-4 text-center">No data available</td>
         </tr>
       </tbody>
     </table>
@@ -32,21 +30,21 @@
 
 <script setup>
 const isLoading = ref(false);
-const healthInsuranceSales = ref([]);
+const leaderboardData = ref([]);
 
 onMounted(async () => {
   isLoading.value = true;
   try {
-    const response = await fetch("/api/dashboard/healthInsuranceSales");
+    const response = await fetch(
+      "/api/dashboard/healthInsuranceSalesLeaderboard"
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const responseData = await response.json();
 
     if (!responseData.success) {
-      throw new Error(
-        responseData.error || "Failed to fetch health insurance sales"
-      );
+      throw new Error(responseData.error || "Failed to fetch leaderboard data");
     }
 
     const data = responseData.data;
@@ -54,14 +52,15 @@ onMounted(async () => {
       throw new Error("Invalid data format received from API");
     }
 
-    healthInsuranceSales.value = data;
+    leaderboardData.value = data;
   } catch (error) {
-    console.error("Error fetching health insurance sales:", error);
+    console.error("Error fetching leaderboard data:", error);
   } finally {
     isLoading.value = false;
   }
 });
 </script>
+
 
 
 
