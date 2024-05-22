@@ -43,6 +43,7 @@ export default {
     try {
       const response = await this.$axios.$get("/api/dashboard/insuranceSales");
       this.InsuranceSales = response.data; // <--- Adjust this line
+      console.log("this.InsuranceSales " + this.InsuranceSales);
     } catch (error) {
       console.error("Error fetching insurance sales:", error);
     } finally {
