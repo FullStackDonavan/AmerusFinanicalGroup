@@ -1,4 +1,5 @@
 import prisma from '~/server/database/client';
+import { getUserById } from '~/server/database/repositories/userRespository';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -7,17 +8,7 @@ export default defineEventHandler(async (event) => {
       where: {
         category: 'Health',
       },
-      include: {
-        seller: {
-          select: {
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
     });
-
-    console.log('Health insurance sales:', healthInsuranceSales); // Log fetched data
 
     // Group and aggregate sales by sellerId
     const salesBySeller = healthInsuranceSales.reduce((acc, sale) => {
@@ -29,16 +20,12 @@ export default defineEventHandler(async (event) => {
       return acc;
     }, {});
 
-    console.log('Sales by seller:', salesBySeller); // Log grouped sales
-
-    // Fetch seller name from healthInsuranceSales and merge with aggregated sales data
+    // Fetch seller details and merge with aggregated sales data
     const salesWithSellerNames = [];
     for (const sellerId in salesBySeller) {
       const sellerSales = salesBySeller[sellerId];
-      const seller = healthInsuranceSales.find(sale => sale.sellerId === parseInt(sellerId))?.seller;
-      console.log('Seller:', seller); // Log seller data
-      const sellerName = seller ? `${seller.firstName} ${seller.lastName}` : 'Unknown';
-      console.log('Seller name:', sellerName); // Log seller name
+      const sellerDetails = await getUserById(parseInt(sellerId));
+      const sellerName = sellerDetails ? `${sellerDetails.firstName} ${sellerDetails.lastName}` : 'Unknown';
       const sellerSalesWithName = {
         ...sellerSales,
         sellerName,
