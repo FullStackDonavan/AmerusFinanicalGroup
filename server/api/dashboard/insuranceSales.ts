@@ -28,6 +28,9 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    // Sort the sales data by total sales in descending order
+    salesWithSellerNames.sort((a, b) => b.totalSales - a.totalSales);
+
     return {
       success: true,
       data: salesWithSellerNames,

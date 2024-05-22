@@ -64,6 +64,7 @@ onMounted(async () => {
 </script>
 
 
+
 <style scoped>
 /* Optional custom styles */
 .leaderboard {
