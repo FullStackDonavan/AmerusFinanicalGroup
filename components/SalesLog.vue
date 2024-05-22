@@ -46,7 +46,6 @@ import { ref } from "vue";
 const isLoading = ref(false);
 const salesData = ref([]);
 
-// Function to format total sales as currency
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
