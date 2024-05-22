@@ -19,6 +19,7 @@ import Tiptap from "~~/components/elements/Tiptap.vue";
         >
           Dashboard
         </h1>
+        <InsuranceSalesForm :data="data" :endpoint="endpoint" />
       </div>
     </div>
   </PatternSection>
