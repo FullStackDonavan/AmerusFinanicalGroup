@@ -36,9 +36,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useFetch } from "@nuxtjs/use-fetch";
-
 // Define reactive variables
 const isLoading = ref(false);
 const insuranceSales = ref([]);
