@@ -1,31 +1,35 @@
+// server/api/updatePaidStatus.js
 import prisma from '~/server/database/client';
 
-export default defineEventHandler(async (event) => {
+export default async function handler(req, res) {
+  const { saleId } = req.query;
+  const { paid } = req.body;
+
   try {
-    // Fetch all insurance sales
-    const insuranceSales = await prisma.insuranceSales.findMany();
+    // Find the sale by its ID
+    const sale = await prisma.insuranceSales.findUnique({
+      where: {
+        id: parseInt(saleId),
+      },
+    });
 
-    // Map the sales data to include the client name
-    const salesWithClientNames = insuranceSales.map((sale) => ({
-      id: sale.id,
-      date: sale.date,
-      clientName: `${sale.firstName} ${sale.lastName}`,
-      price: Number(sale.price), // Ensure price is a number
-      category: sale.category,
-    }));
+    if (!sale) {
+      return res.status(404).json({ error: 'Sale not found' });
+    }
 
-    // Optionally sort the sales data by date or other criteria
-    salesWithClientNames.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    // Update the paid status of the sale
+    const updatedSale = await prisma.insuranceSales.update({
+      where: {
+        id: parseInt(saleId),
+      },
+      data: {
+        paid: paid,
+      },
+    });
 
-    return {
-      success: true,
-      data: salesWithClientNames,
-    };
+    res.status(200).json(updatedSale);
   } catch (error) {
-    console.error('Error fetching insurance sales:', error);
-    return {
-      success: false,
-      error: 'Failed to fetch insurance sales',
-    };
+    console.error('Error updating paid status:', error);
+    res.status(500).json({ error: 'Failed to update paid status' });
   }
-});
+}

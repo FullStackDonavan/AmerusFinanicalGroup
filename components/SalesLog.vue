@@ -56,7 +56,7 @@ const formatCurrency = (amount) => {
 
 const togglePaidStatus = async (saleId, newStatus) => {
   try {
-    const response = await fetch(`/api/updatePaidStatus/${saleId}`, {
+    const response = await fetch(`/api/dashboard/updatePaidStatus/${saleId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -132,5 +132,14 @@ onMounted(async () => {
 }
 
 .leaderboard .rank {
-  width: ;
+  width: 50px;
 }
+
+.leaderboard .name {
+  width: 200px;
+}
+
+.leaderboard .ytd {
+  width: 100px;
+}
+</style>
