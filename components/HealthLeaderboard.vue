@@ -12,10 +12,10 @@
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
           v-for="(user, index) in leaderboardData"
-          :key="user.id"
+          :key="user.sellerId"
         >
           <td class="py-2 px-4">{{ index + 1 }}</td>
-          <td class="py-2 px-4">{{ user.firstName }} {{ user.lastName }}</td>
+          <td class="py-2 px-4">{{ user.sellerName }}</td>
           <td class="py-2 px-4">{{ user.totalSales }}</td>
         </tr>
       </tbody>
@@ -27,6 +27,7 @@
     </table>
   </BasicSection>
 </template>
+
 
 <script setup>
 const isLoading = ref(false);
