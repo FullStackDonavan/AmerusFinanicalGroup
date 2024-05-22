@@ -36,6 +36,8 @@
 </template>
 
 <script setup>
+import { getUserById } from "~/server/database/repositories/userRespository";
+
 // Define reactive variables
 const isLoading = ref(false);
 const insuranceSales = ref([]);
@@ -61,20 +63,16 @@ useFetch(async () => {
       salesBySeller[sellerId].push(sale);
     }
 
-    // Fetch seller names and merge with sales data
+    // Fetch and merge seller details with sales data
     const sellerIds = Object.keys(salesBySeller);
     for (const sellerId of sellerIds) {
-      // Fetch seller details from user table
-      const sellerResponse = await fetch(`/api/users/${sellerId}`);
-      if (!sellerResponse.ok) {
-        throw new Error(`HTTP error! Status: ${sellerResponse.status}`);
-      }
-      const sellerData = await sellerResponse.json();
+      // Fetch seller details from user repository
+      const sellerDetails = await getUserById(parseInt(sellerId));
 
       // Merge seller name with each sale
       const salesWithSellerName = salesBySeller[sellerId].map((sale) => ({
         ...sale,
-        sellerName: `${sellerData.firstName} ${sellerData.lastName}`,
+        sellerName: `${sellerDetails.firstName} ${sellerDetails.lastName}`,
       }));
 
       // Push sales with seller name to insuranceSales array
