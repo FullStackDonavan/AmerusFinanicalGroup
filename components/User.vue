@@ -35,7 +35,7 @@ onClickOutside(userActions, () => (hideActions.value = true));
 
     <ul
       :class="[{ hidden: hideActions }]"
-      class="dropdown-menu min-w-max absolute bottom bg-white text-base z-100 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 top- m-0 bg-clip-padding border-none"
+      class="z-[9999] dropdown-menu min-w-max absolute bottom bg-white text-base z-100 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 top- m-0 bg-clip-padding border-none"
       aria-labelledby="dropdownMenuButton1"
     >
       <li v-if="isLoggedIn" @click="logout">
