@@ -38,17 +38,23 @@ export default {
       pending: false,
     };
   },
-  async fetch() {
-    this.pending = true;
-    try {
-      const response = await this.$axios.$get("/api/dashboard/insuranceSales");
-      this.InsuranceSales = response.data; // <--- Adjust this line
-      console.log("this.InsuranceSales " + this.InsuranceSales);
-    } catch (error) {
-      console.error("Error fetching insurance sales:", error);
-    } finally {
-      this.pending = false;
-    }
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      this.pending = true;
+      try {
+        const response = await this.$axios.$get(
+          "/api/dashboard/insuranceSales"
+        );
+        this.InsuranceSales = response.data; // Adjust response structure based on your API
+      } catch (error) {
+        console.error("Error fetching insurance sales:", error);
+      } finally {
+        this.pending = false;
+      }
+    },
   },
 };
 </script>
