@@ -29,7 +29,7 @@ export default async function handler(req, res) {
 
     res.status(200).json(updatedSale);
   } catch (error) {
-    console.error('Error updating paid status:', error);
+    console.error('Error updating paid status: ', error);
     res.status(500).json({ error: 'Failed to update paid status' });
   }
 }
