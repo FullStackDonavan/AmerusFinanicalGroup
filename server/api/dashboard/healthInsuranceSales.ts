@@ -7,6 +7,14 @@ export default defineEventHandler(async (event) => {
       where: {
         category: 'Health',
       },
+      include: {
+        seller: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
     });
 
     // Group and aggregate sales by sellerId
@@ -23,9 +31,11 @@ export default defineEventHandler(async (event) => {
     const salesWithSellerNames = [];
     for (const sellerId in salesBySeller) {
       const sellerSales = salesBySeller[sellerId];
+      const seller = healthInsuranceSales.find(sale => sale.sellerId === parseInt(sellerId))?.seller;
+      const sellerName = seller ? `${seller.firstName} ${seller.lastName}` : 'Unknown';
       const sellerSalesWithName = {
         ...sellerSales,
-        sellerName: healthInsuranceSales.find(sale => sale.sellerId === parseInt(sellerId))?.firstName || 'Unknown',
+        sellerName,
       };
       salesWithSellerNames.push(sellerSalesWithName);
     }
