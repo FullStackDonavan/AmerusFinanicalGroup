@@ -47,7 +47,7 @@ const formatCurrency = (amount) => {
 onMounted(async () => {
   isLoading.value = true;
   try {
-    const response = await fetch("/api/dashboard/healthInsuranceSales");
+    const response = await fetch("/api/dashboard/salesLog");
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
