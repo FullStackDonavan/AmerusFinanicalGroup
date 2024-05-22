@@ -40,6 +40,7 @@ export async function findQuestion(id: number): Promise<IQuestion> {
 
 export async function findInsuranceSales(): Promise<IInsuranceSales[]> {
   return await prisma.insuranceSales.findMany();
+  
 }
 
 

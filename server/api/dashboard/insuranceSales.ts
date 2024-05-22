@@ -4,11 +4,10 @@ import { findInsuranceSales } from "~/server/database/repositories/askJackRespos
 // import { getUserById } from "~/server/database/repositories/userRespository";
 
 export default defineEventHandler(async (event) => {
-    const queries = getQuery(event)
 
-    const InsuranceSales =  await findInsuranceSales()
+    const Sales =  await findInsuranceSales()
     
 
-    console.log("Response from API:", InsuranceSales); // Corrected console.log
-    return InsuranceSales
+    console.log("Response from API:", Sales); // Corrected console.log
+    return Sales
 })
