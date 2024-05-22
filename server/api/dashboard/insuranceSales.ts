@@ -1,13 +1,18 @@
 
-import { defineEventHandler } from "h3";
-import { findInsuranceSales } from "~/server/database/repositories/askJackRespository";
-// import { getUserById } from "~/server/database/repositories/userRespository";
+import prisma from '~/server/database/client';
 
 export default defineEventHandler(async (event) => {
-
-    const Sales =  await findInsuranceSales()
-    
-
-    console.log("Response from API:", Sales); // Corrected console.log
-    return Sales
-})
+  try {
+    const insuranceSales = await prisma.insuranceSales.findMany();
+    return {
+      success: true,
+      data: insuranceSales,
+    };
+  } catch (error) {
+    console.error('Error fetching insurance sales:', error);
+    return {
+      success: false,
+      error: 'Failed to fetch insurance sales',
+    };
+  }
+});
