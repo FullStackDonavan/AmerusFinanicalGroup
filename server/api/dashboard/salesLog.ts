@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
       const sellerName = sellerDetails ? `${sellerDetails.firstName} ${sellerDetails.lastName}` : 'Unknown';
       const saleWithSellerName = {
         ...sale,
+        price: sale.price.toNumber(), // Ensure price is a number
         sellerName,
       };
       salesWithSellerNames.push(saleWithSellerName);
