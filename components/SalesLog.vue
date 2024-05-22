@@ -3,10 +3,11 @@
     <table class="w-full table-fixed border-collapse border border-gray-400">
       <thead>
         <tr class="bg-blue-500 text-white">
-          <th class="w-1/4 py-2 px-4 text-left">Date</th>
-          <th class="w-1/4 py-2 px-4 text-left">Client Name</th>
-          <th class="w-1/4 py-2 px-4 text-left">Category</th>
-          <th class="w-1/4 py-2 px-4 text-left">Price</th>
+          <th class="w-1/5 py-2 px-4 text-left">Date</th>
+          <th class="w-1/5 py-2 px-4 text-left">Client Name</th>
+          <th class="w-1/5 py-2 px-4 text-left">Category</th>
+          <th class="w-1/5 py-2 px-4 text-left">Price</th>
+          <th class="w-1/5 py-2 px-4 text-left">Paid</th>
         </tr>
       </thead>
       <tbody v-if="!isLoading && salesData.length">
@@ -21,11 +22,18 @@
           <td class="py-2 px-4">{{ sale.clientName }}</td>
           <td class="py-2 px-4">{{ sale.category }}</td>
           <td class="py-2 px-4">{{ formatCurrency(sale.price) }}</td>
+          <td class="py-2 px-4">
+            <input
+              type="checkbox"
+              :checked="sale.paid"
+              @click="togglePaidStatus(sale.id, !sale.paid)"
+            />
+          </td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="4" class="py-2 px-4 text-center">No data available</td>
+          <td colspan="5" class="py-2 px-4 text-center">No data available</td>
         </tr>
       </tbody>
     </table>
@@ -33,6 +41,8 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+
 const isLoading = ref(false);
 const salesData = ref([]);
 
@@ -42,6 +52,31 @@ const formatCurrency = (amount) => {
     style: "currency",
     currency: "USD",
   }).format(amount);
+};
+
+const togglePaidStatus = async (saleId, newStatus) => {
+  try {
+    const response = await fetch(`/api/updatePaidStatus/${saleId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paid: newStatus }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const updatedSale = await response.json();
+    // Update salesData with the updated sale
+    const index = salesData.value.findIndex((sale) => sale.id === saleId);
+    if (index !== -1) {
+      salesData.value[index].paid = updatedSale.paid;
+    }
+  } catch (error) {
+    console.error("Error updating paid status:", error);
+  }
 };
 
 onMounted(async () => {
@@ -97,14 +132,5 @@ onMounted(async () => {
 }
 
 .leaderboard .rank {
-  width: 50px;
+  width: ;
 }
-
-.leaderboard .name {
-  width: 200px;
-}
-
-.leaderboard .ytd {
-  width: 100px;
-}
-</style>

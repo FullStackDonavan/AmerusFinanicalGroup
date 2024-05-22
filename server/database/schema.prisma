@@ -41,7 +41,9 @@ model InsuranceSales {
   category    String
   policyYear  Int
   price       Decimal
+  paid        Boolean   @default(false) // New field to represent whether the sale has been paid
 }
+
 
 model Session {
   id        Int       @id @default(autoincrement())
