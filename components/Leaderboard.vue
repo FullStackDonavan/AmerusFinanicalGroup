@@ -36,9 +36,6 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { useFetch } from "@nuxtjs/use-fetch";
-
 export default {
   setup() {
     const isLoading = ref(false); // Flag to indicate loading state
