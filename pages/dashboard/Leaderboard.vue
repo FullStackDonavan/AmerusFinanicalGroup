@@ -12,7 +12,7 @@ import Tiptap from "~~/components/elements/Tiptap.vue";
         <h1
           class="py-9 text-center text-5xl font-extrabold text-gray-900 dark:text-gray-400"
         >
-          Leaderboard
+          Leaderboards
         </h1>
         <GridTwoColumns>
           <Leaderboard />
