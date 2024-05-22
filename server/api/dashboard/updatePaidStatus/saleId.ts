@@ -1,4 +1,4 @@
-// server/api/updatePaidStatus.js
+// server/api/dashboard/updatePaidStatus.ts
 import prisma from '~/server/database/client';
 
 export default async function handler(req, res) {
