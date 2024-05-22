@@ -1,40 +1,40 @@
 import prisma from '~/server/database/client';
-import { getUserById } from '~/server/database/repositories/userRespository';
 
 export default defineEventHandler(async (event) => {
   try {
-    // Fetch all health insurance sales
-    const healthInsuranceSales = await prisma.insuranceSales.findMany({
-      where: {
-        category: 'Health',
+    // Fetch all insurance sales
+    const insuranceSales = await prisma.insuranceSales.findMany({
+      select: {
+        id: true,
+        date: true,
+        firstName: true,
+        lastName: true,
+        price: true,
+        category: true,
       },
     });
 
-    // Fetch seller details and merge with sales data
-    const salesWithSellerNames = [];
-    for (const sale of healthInsuranceSales) {
-      const sellerDetails = await getUserById(sale.sellerId);
-      const sellerName = sellerDetails ? `${sellerDetails.firstName} ${sellerDetails.lastName}` : 'Unknown';
-      const saleWithSellerName = {
-        ...sale,
-        price: sale.price.toNumber(), // Ensure price is a number
-        sellerName,
-      };
-      salesWithSellerNames.push(saleWithSellerName);
-    }
+    // Map the sales data to include the client name
+    const salesWithClientNames = insuranceSales.map((sale) => ({
+      id: sale.id,
+      date: sale.date,
+      clientName: `${sale.firstName} ${sale.lastName}`,
+      price: Number(sale.price), // Ensure price is a number
+      category: sale.category,
+    }));
 
     // Optionally sort the sales data by date or other criteria
-    salesWithSellerNames.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    salesWithClientNames.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return {
       success: true,
-      data: salesWithSellerNames,
+      data: salesWithClientNames,
     };
   } catch (error) {
-    console.error('Error fetching health insurance sales:', error);
+    console.error('Error fetching insurance sales:', error);
     return {
       success: false,
-      error: 'Failed to fetch health insurance sales',
+      error: 'Failed to fetch insurance sales',
     };
   }
 });

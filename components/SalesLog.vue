@@ -4,7 +4,7 @@
       <thead>
         <tr class="bg-blue-500 text-white">
           <th class="w-1/4 py-2 px-4 text-left">Date</th>
-          <th class="w-1/4 py-2 px-4 text-left">Seller Name</th>
+          <th class="w-1/4 py-2 px-4 text-left">Client Name</th>
           <th class="w-1/4 py-2 px-4 text-left">Category</th>
           <th class="w-1/4 py-2 px-4 text-left">Price</th>
         </tr>
@@ -13,10 +13,12 @@
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
           v-for="(sale, index) in salesData"
-          :key="index"
+          :key="sale.id"
         >
-          <td class="py-2 px-4">{{ sale.date }}</td>
-          <td class="py-2 px-4">{{ sale.sellerName }}</td>
+          <td class="py-2 px-4">
+            {{ new Date(sale.date).toLocaleDateString() }}
+          </td>
+          <td class="py-2 px-4">{{ sale.clientName }}</td>
           <td class="py-2 px-4">{{ sale.category }}</td>
           <td class="py-2 px-4">{{ formatCurrency(sale.price) }}</td>
         </tr>
