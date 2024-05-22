@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <!-- Table body -->
-      <tbody v-if="!pending && insuranceSales && insuranceSales.length">
+      <tbody v-if="!isLoading && insuranceSales && insuranceSales.length">
         <!-- Loop through insurance sales data -->
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
@@ -36,28 +36,37 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { useFetch } from "@nuxtjs/use-fetch";
+
 export default {
-  data() {
-    return {
-      insuranceSales: [], // Store fetched data
-      pending: false, // Flag to indicate loading state
-    };
-  },
-  // Fetch data when component is mounted
-  async mounted() {
-    this.pending = true; // Set loading flag
-    try {
-      // Fetch data from the API endpoint
-      const response = await this.$axios.$get("/api/dashboard/insuranceSales");
-      // Update component data with fetched data
-      this.insuranceSales = response.data;
-    } catch (error) {
-      // Handle error if fetching data fails
-      console.error("Error fetching insurance sales:", error);
-    } finally {
-      // Reset loading flag regardless of success or failure
-      this.pending = false;
-    }
+  setup() {
+    const isLoading = ref(false); // Flag to indicate loading state
+    const insuranceSales = ref([]); // Store fetched data
+
+    // Fetch data using useFetch
+    useFetch(async () => {
+      isLoading.value = true; // Set loading flag
+      try {
+        // Fetch data from the API endpoint
+        const response = await fetch("/api/dashboard/insuranceSales");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        // Parse response as JSON
+        const data = await response.json();
+        // Update component data with fetched data
+        insuranceSales.value = data;
+      } catch (error) {
+        // Handle error if fetching data fails
+        console.error("Error fetching insurance sales:", error);
+      } finally {
+        // Reset loading flag regardless of success or failure
+        isLoading.value = false;
+      }
+    });
+
+    return { isLoading, insuranceSales };
   },
 };
 </script>
