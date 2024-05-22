@@ -3,7 +3,7 @@
     <h2
       class="py-9 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-400"
     >
-      Health Leaderboard
+      Life Leaderboard
     </h2>
     <table class="w-full table-fixed border-collapse border border-gray-400">
       <thead>
@@ -41,7 +41,7 @@ const leaderboardData = ref([]);
 onMounted(async () => {
   isLoading.value = true;
   try {
-    const response = await fetch("/api/dashboard/healthInsuranceSales");
+    const response = await fetch("/api/dashboard/lifeInsuranceSales");
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
