@@ -21,7 +21,7 @@
         >
           <td class="py-2 px-4">{{ index + 1 }}</td>
           <td class="py-2 px-4">{{ user.sellerName }}</td>
-          <td class="py-2 px-4">{{ user.totalSales }}</td>
+          <td class="py-2 px-4">{{ formatCurrency(user.totalSales) }}</td>
         </tr>
       </tbody>
       <tbody v-else>
@@ -37,6 +37,14 @@
 <script setup>
 const isLoading = ref(false);
 const leaderboardData = ref([]);
+
+// Function to format totalSales as currency
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+};
 
 onMounted(async () => {
   isLoading.value = true;

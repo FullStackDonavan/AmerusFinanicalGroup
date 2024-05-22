@@ -16,7 +16,7 @@
         >
           <td class="py-2 px-4">{{ index + 1 }}</td>
           <td class="py-2 px-4">{{ sale.sellerName }}</td>
-          <td class="py-2 px-4">{{ sale.totalSales }}</td>
+          <td class="py-2 px-4">{{ formatCurrency(sale.totalSales) }}</td>
         </tr>
       </tbody>
       <tbody v-else>
@@ -33,6 +33,14 @@
 <script setup>
 const isLoading = ref(false);
 const insuranceSales = ref([]);
+
+// Function to format totalSales as currency
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+};
 
 onMounted(async () => {
   isLoading.value = true;
