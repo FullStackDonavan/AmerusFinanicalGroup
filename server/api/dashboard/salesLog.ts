@@ -3,16 +3,7 @@ import prisma from '~/server/database/client';
 export default defineEventHandler(async (event) => {
   try {
     // Fetch all insurance sales
-    const insuranceSales = await prisma.insuranceSales.findMany({
-      select: {
-        id: true,
-        date: true,
-        firstName: true,
-        lastName: true,
-        price: true,
-        category: true,
-      },
-    });
+    const insuranceSales = await prisma.insuranceSales.findMany();
 
     // Map the sales data to include the client name
     const salesWithClientNames = insuranceSales.map((sale) => ({
