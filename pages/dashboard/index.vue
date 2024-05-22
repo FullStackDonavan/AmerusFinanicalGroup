@@ -34,8 +34,8 @@ const endpoint = "/api/dashboard/reportInsuranceSales";
         >
           Dashboard
         </h1>
-        <InsuranceSalesForm :data="data" :endpoint="endpoint" />
       </div>
+      <InsuranceSalesForm :data="data" :endpoint="endpoint" />
     </div>
   </PatternSection>
 </template>
