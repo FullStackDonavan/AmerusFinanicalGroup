@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import InsuranceSalesForm from "~/components/elements/InsuranceSalesForm.vue";
 import QuestionBoard from "~/components/elements/QuestionBoard.vue";
 import DashboardSidebar from "~~/components/elements/DashboardSidebar.vue";
 import PipelineHeader from "~~/components/dashboard/PipelineHeader.vue"; // Add this line
