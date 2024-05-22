@@ -8,10 +8,10 @@
           <th class="w-1/4 py-2 px-4 text-left">Price</th>
         </tr>
       </thead>
-      <tbody v-if="!pending && insuranceSales && insuranceSales.length">
+      <tbody v-if="!pending && allInsuranceSales && insuranceSales.length">
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-          v-for="(sale, index) in insuranceSales"
+          v-for="(sale, index) in allInsuranceSales"
           :key="sale.id || index"
         >
           <td class="py-2 px-4">{{ index + 1 }}</td>
@@ -42,7 +42,7 @@ export default {
     this.pending = true;
     try {
       const response = await this.$axios.$get("/api/dashboard/insuranceSales");
-      this.insuranceSales = response.data; // <--- Adjust this line
+      this.allInsuranceSales = response.data; // <--- Adjust this line
     } catch (error) {
       console.error("Error fetching insurance sales:", error);
     } finally {
