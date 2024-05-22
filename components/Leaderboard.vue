@@ -1,5 +1,10 @@
 <template>
   <BasicSection class="mx-4">
+    <h2
+      class="py-9 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-400"
+    >
+      Year To Date Leaderboard
+    </h2>
     <table class="w-full table-fixed border-collapse border border-gray-400">
       <thead>
         <tr class="bg-blue-500 text-white">

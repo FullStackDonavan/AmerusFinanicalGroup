@@ -14,10 +14,14 @@ import Tiptap from "~~/components/elements/Tiptap.vue";
         >
           Leaderboard
         </h1>
-        <Leaderboard />
-        <HealthLeaderboard />
-        <LifeLeaderboard />
-        <MedicareLeaderboard />
+        <GridTwoColumns>
+          <Leaderboard />
+          <HealthLeaderboard />
+        </GridTwoColumns>
+        <GridTwoColumns>
+          <LifeLeaderboard />
+          <MedicareLeaderboard />
+        </GridTwoColumns>
       </div>
     </div>
   </PatternSection>
