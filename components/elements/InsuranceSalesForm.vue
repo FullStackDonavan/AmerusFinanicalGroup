@@ -98,7 +98,7 @@ async function postInsuranceSales() {
     { method: "post", body: { data: postData }, pick: ["id"] }
   );
 
-  router.push(`/dashboard/question/${question.value.id}`);
+  router.push(`/dashboard/Leaderboard/`);
 }
 </script>
 
