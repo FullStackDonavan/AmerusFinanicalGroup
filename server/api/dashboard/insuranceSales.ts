@@ -6,9 +6,9 @@ import { findInsuranceSales } from "~/server/database/repositories/askJackRespos
 export default defineEventHandler(async (event) => {
     const queries = getQuery(event)
 
-    const InsuranceSales =  await findInsuranceSales()
+    const insuranceSales =  await findInsuranceSales()
     
 
-    console.log("Response from API:", InsuranceSales); // Corrected console.log
-    return InsuranceSales
+    console.log("Response from API:", insuranceSales); // Corrected console.log
+    return insuranceSales
 })
