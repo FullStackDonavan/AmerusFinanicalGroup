@@ -36,8 +36,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useFetch } from "@nuxtjs/use-fetch";
 import { getUserById } from "~/server/database/repositories/userRespository";
 
 // Define reactive variables
