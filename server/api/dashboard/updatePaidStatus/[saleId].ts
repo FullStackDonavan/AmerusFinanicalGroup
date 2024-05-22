@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Sale not found' });
     }
 
-    // Update the paid status of the sales
+    // Update the paid status of the sale
     const updatedSale = await prisma.insuranceSales.update({
       where: {
         id: parseInt(saleId),
