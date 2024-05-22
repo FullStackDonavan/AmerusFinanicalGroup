@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { getUserById } from "~/server/database/repositories/userRepository";
+import { getUserById } from "~/server/database/repositories/userRespository";
 
 const isLoading = ref(false);
 const insuranceSales = ref([]);
