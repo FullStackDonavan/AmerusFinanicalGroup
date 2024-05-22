@@ -3,25 +3,27 @@
     <table class="w-full table-fixed border-collapse border border-gray-400">
       <thead>
         <tr class="bg-blue-500 text-white">
-          <th class="w-1/4 py-2 px-4 text-left">Rank</th>
-          <th class="w-1/2 py-2 px-4 text-left">Name</th>
-          <th class="w-1/4 py-2 px-4 text-left">Total Sales</th>
+          <th class="w-1/4 py-2 px-4 text-left">Date</th>
+          <th class="w-1/4 py-2 px-4 text-left">Seller Name</th>
+          <th class="w-1/4 py-2 px-4 text-left">Category</th>
+          <th class="w-1/4 py-2 px-4 text-left">Price</th>
         </tr>
       </thead>
-      <tbody v-if="!isLoading && leaderboardData.length">
+      <tbody v-if="!isLoading && salesData.length">
         <tr
           class="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-          v-for="(user, index) in leaderboardData"
-          :key="user.sellerId"
+          v-for="(sale, index) in salesData"
+          :key="index"
         >
-          <td class="py-2 px-4">{{ index + 1 }}</td>
-          <td class="py-2 px-4">{{ user.sellerName }}</td>
-          <td class="py-2 px-4">{{ formatCurrency(user.totalSales) }}</td>
+          <td class="py-2 px-4">{{ sale.date }}</td>
+          <td class="py-2 px-4">{{ sale.sellerName }}</td>
+          <td class="py-2 px-4">{{ sale.category }}</td>
+          <td class="py-2 px-4">{{ formatCurrency(sale.price) }}</td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="3" class="py-2 px-4 text-center">No data available</td>
+          <td colspan="4" class="py-2 px-4 text-center">No data available</td>
         </tr>
       </tbody>
     </table>
@@ -30,9 +32,9 @@
 
 <script setup>
 const isLoading = ref(false);
-const leaderboardData = ref([]);
+const salesData = ref([]);
 
-// Function to format totalSales as currency
+// Function to format total sales as currency
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -50,7 +52,7 @@ onMounted(async () => {
     const responseData = await response.json();
 
     if (!responseData.success) {
-      throw new Error(responseData.error || "Failed to fetch leaderboard data");
+      throw new Error(responseData.error || "Failed to fetch sales data");
     }
 
     const data = responseData.data;
@@ -58,9 +60,9 @@ onMounted(async () => {
       throw new Error("Invalid data format received from API");
     }
 
-    leaderboardData.value = data;
+    salesData.value = data;
   } catch (error) {
-    console.error("Error fetching leaderboard data:", error);
+    console.error("Error fetching sales data:", error);
   } finally {
     isLoading.value = false;
   }
