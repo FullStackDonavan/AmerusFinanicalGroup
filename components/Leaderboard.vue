@@ -59,7 +59,7 @@ onMounted(async () => {
       throw new Error("Invalid data format received from API");
     }
 
-    // Group sales by sellerId
+    // Group sales by sellerIds
     const salesBySeller = {};
     for (const sale of data) {
       const sellerId = sale.sellerId;
