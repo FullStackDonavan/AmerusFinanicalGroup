@@ -6,10 +6,7 @@ generator client {
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
-//datasource db {
-//  provider  = "mysql"
-//  url       = env("DATABASE_URL")
-// //}
+
 
 datasource db {
   provider  = "postgresql"
