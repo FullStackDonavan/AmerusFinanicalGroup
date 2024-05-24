@@ -43,6 +43,19 @@ function rehide() {
             </li>
             <li>
               <NuxtLink
+                to="/dashboard/SalesLog"
+                class="flex items-center text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <Icon
+                  name="icon-park-outline:table-report"
+                  class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  size="45"
+                />
+                <span class="">Sales Log</span>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink
                 to="/dashboard/Leaderboard"
                 class="flex items-center text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >

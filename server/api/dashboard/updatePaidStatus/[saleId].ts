@@ -1,9 +1,21 @@
-// server/api/dashboard/updatePaidStatus.ts
 import prisma from '~/server/database/client';
+import { eventHandler, getQuery, readBody } from 'h3';
 
-export default async function handler(req, res) {
-  const { saleId } = req.query;
-  const { paid } = req.body;
+export default eventHandler(async (event) => {
+  const { saleId } = event.context.params; // Correctly get the saleId from params
+  const body = await readBody(event);
+
+  console.log('Request params:', event.context.params);
+  console.log('Request body:', body);
+
+  if (!saleId) {
+    return { statusCode: 400, body: { error: 'Sale ID is missing' } };
+  }
+
+  const { paid } = body;
+  if (paid === undefined) {
+    return { statusCode: 400, body: { error: 'Paid status is missing' } };
+  }
 
   try {
     // Find the sale by its ID
@@ -13,11 +25,13 @@ export default async function handler(req, res) {
       },
     });
 
+    console.log('Found sale:', sale);
+
     if (!sale) {
-      return res.status(404).json({ error: 'Sale not found' });
+      return { statusCode: 404, body: { error: 'Sale not found' } };
     }
 
-    // Update the paid status of the sales 
+    // Update the paid status of the sale
     const updatedSale = await prisma.insuranceSales.update({
       where: {
         id: parseInt(saleId),
@@ -27,9 +41,11 @@ export default async function handler(req, res) {
       },
     });
 
-    res.status(200).json(updatedSale);
+    console.log('Updated sale:', updatedSale);
+
+    return { statusCode: 200, body: updatedSale };
   } catch (error) {
     console.error('Error updating paid status: ', error);
-    res.status(500).json({ error: 'Failed to update paid status' });
+    return { statusCode: 500, body: { error: 'Failed to update paid status' } };
   }
-}
+});

@@ -37,6 +37,7 @@ export async function useLoggedIn() {
   return true
 }
 
+
 export async function userLogout() {
   await useFetch('/api/auth/logout')
   useState('user').value = null

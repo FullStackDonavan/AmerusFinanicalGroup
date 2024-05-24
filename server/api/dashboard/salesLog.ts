@@ -1,9 +1,17 @@
+// salesLog.ts
+
 import prisma from '~/server/database/client';
 
 export default defineEventHandler(async (event) => {
   try {
-    // Fetch all insurance sales
-    const insuranceSales = await prisma.insuranceSales.findMany();
+    const userId = event.payload.userId; // Accessing the user ID from the payload
+
+    // Fetch insurance sales belonging to the logged-in user (filtered by user ID)
+    const insuranceSales = await prisma.insuranceSales.findMany({
+      where: {
+        userId: userId,
+      },
+    });
 
     // Map the sales data to include the client name
     const salesWithClientNames = insuranceSales.map((sale) => ({
@@ -12,6 +20,7 @@ export default defineEventHandler(async (event) => {
       clientName: `${sale.firstName} ${sale.lastName}`,
       price: Number(sale.price), // Ensure price is a number
       category: sale.category,
+      paid: sale.paid
     }));
 
     // Optionally sort the sales data by date or other criteria

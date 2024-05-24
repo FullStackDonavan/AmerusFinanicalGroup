@@ -24,9 +24,12 @@
           <td class="py-2 px-4">{{ formatCurrency(sale.price) }}</td>
           <td class="py-2 px-4">
             <input
+              id="checkbox"
               type="checkbox"
+              v-model="sale.paid"
               :checked="sale.paid"
               @click="togglePaidStatus(sale.id, !sale.paid)"
+              class="form-checkbox h-5 w-5 text-blue-600"
             />
           </td>
         </tr>
@@ -41,12 +44,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const isLoading = ref(false);
 const salesData = ref([]);
-
-// Function to format total sales as currency
+console.log("salesData", salesData);
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -56,6 +58,8 @@ const formatCurrency = (amount) => {
 
 const togglePaidStatus = async (saleId, newStatus) => {
   try {
+    console.log(`Updating sale ID ${saleId} with new status: ${newStatus}`);
+
     const response = await fetch(`/api/dashboard/updatePaidStatus/${saleId}`, {
       method: "PATCH",
       headers: {
@@ -69,10 +73,15 @@ const togglePaidStatus = async (saleId, newStatus) => {
     }
 
     const updatedSale = await response.json();
-    // Update salesData with the updated sale
-    const index = salesData.value.findIndex((sale) => sale.id === saleId);
-    if (index !== -1) {
-      salesData.value[index].paid = updatedSale.paid;
+    console.log("Updated sale response:", updatedSale);
+
+    if (updatedSale.statusCode === 200) {
+      const index = salesData.value.findIndex((sale) => sale.id === saleId);
+      if (index !== -1) {
+        salesData.value[index].paid = updatedSale.body.paid;
+      }
+    } else {
+      console.error("Error from server:", updatedSale.body.error);
     }
   } catch (error) {
     console.error("Error updating paid status:", error);
@@ -97,6 +106,7 @@ onMounted(async () => {
       throw new Error("Invalid data format received from API");
     }
 
+    // Assign the fetched data to salesData
     salesData.value = data;
   } catch (error) {
     console.error("Error fetching sales data:", error);

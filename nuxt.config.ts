@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
   },
+  
   components: {
     "dirs": [
       {
@@ -46,6 +47,7 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET || 'your-secret-key',
     private: {
       stripeSecretKey: process.env.STRIPE_SECRET_KEY,
       db: process.env.DATABASE_URL,
@@ -59,6 +61,13 @@ export default defineNuxtConfig({
   },
   experimental: {
     writeEarlyHints: false,
+  },
+  nitro: {
+    routeRules: {
+      '/api/**': {
+        middleware: 'auth-server',
+      },
+    },
   },
   image: {
     // IPX options
