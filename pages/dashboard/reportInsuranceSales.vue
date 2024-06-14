@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import InsuranceSalesForm from "~/components/elements/InsuranceSalesForm.vue";
-import DashboardSidebar from "~~/components/elements/DashboardSidebar.vue";
 
 // definePageMeta({
 //   middleware: "auth",
@@ -24,7 +23,6 @@ const endpoint = "/api/dashboard/reportInsuranceSales";
  <template>
   <PatternSection>
     <div class="md:flex">
-      <DashboardSidebar />
       <div v-if="true" class="w-full">
         <InsuranceSalesForm :data="data" :endpoint="endpoint" />
       </div>

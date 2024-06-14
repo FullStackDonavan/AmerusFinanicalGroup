@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import QuestionBoard from "~/components/elements/QuestionBoard.vue";
-import DashboardSidebar from "~~/components/elements/DashboardSidebar.vue";
 import Tiptap from "~~/components/elements/Tiptap.vue";
+
+definePageMeta({
+  middleware: "auth",
+  layout: "dashboard",
+});
 </script>
  
  <template>
   <PatternSection>
     <div class="md:flex min-h-full">
-      <DashboardSidebar />
       <QuestionBoard />
     </div>
     <div class="h-32 flex justify-center">

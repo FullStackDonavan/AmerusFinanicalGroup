@@ -1,4 +1,3 @@
-
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -17,7 +16,28 @@ export default defineNuxtConfig({
       
     ]
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@nuxt/content', 'nuxt-icon', '@nuxt/image','@nuxtjs/seo','nuxt-swiper'],
+  shadcn: {
+    /**
+     * Prefix for all the imported component
+     */
+    prefix: '',
+    /**
+     * Directory that the component lives in.
+     * @default "./components/ui"
+     */
+    componentDir: './components/ui'
+  },
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/color-mode',
+    '@nuxt/content',
+    'nuxt-icon',
+    '@nuxt/image',
+    '@nuxtjs/seo',
+    'nuxt-swiper',
+    "shadcn-nuxt",
+    'nuxt-highcharts',
+  ],
   swiper: {
     // Swiper options
     //----------------------
@@ -47,7 +67,6 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    jwtSecret: process.env.JWT_SECRET || 'your-secret-key',
     private: {
       stripeSecretKey: process.env.STRIPE_SECRET_KEY,
       db: process.env.DATABASE_URL,

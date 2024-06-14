@@ -91,7 +91,7 @@ const togglePaidStatus = async (saleId, newStatus) => {
 onMounted(async () => {
   isLoading.value = true;
   try {
-    const response = await fetch("/api/dashboard/salesLog");
+    const response = await fetch("/api/dashboard/Transactions");
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

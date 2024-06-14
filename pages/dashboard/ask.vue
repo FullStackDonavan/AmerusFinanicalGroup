@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import QuestionForm from "~/components/elements/QuestionForm.vue";
-import DashboardSidebar from "~~/components/elements/DashboardSidebar.vue";
 
 definePageMeta({
   middleware: "auth",
+  layout: "dashboard",
 });
 
 const data: IQuestionPost = reactive({
@@ -17,7 +17,6 @@ const endpoint = "/api/dashboard/ask";
  <template>
   <PatternSection>
     <div class="md:flex">
-      <DashboardSidebar />
       <div v-if="true" class="w-full">
         <QuestionForm :data="data" :endpoint="endpoint" />
       </div>

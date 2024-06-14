@@ -1,8 +1,4 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: "auth",
-});
-
 interface Props {
   data: IQuestionPost;
   endpoint?: String;

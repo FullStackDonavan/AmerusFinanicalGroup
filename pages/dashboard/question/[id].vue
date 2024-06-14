@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DashboardSidebar from "~~/components/elements/DashboardSidebar.vue";
 import AnswerForm from "~/components/elements/AnswerForm.vue";
 import QuestionForm from "~~/components/elements/QuestionForm.vue";
 import Tiptap from "~~/components/elements/Tiptap.vue";
@@ -49,12 +48,16 @@ function addAnswer(answer: IAnswer) {
   question.value?.answers.push(answer);
   showAnswerForm.value = false;
 }
+
+definePageMeta({
+  middleware: "auth",
+  layout: "dashboard",
+});
 </script>
  
  <template>
   <PatternSection>
     <div class="md:flex min-h-full">
-      <DashboardSidebar />
       <div class="w-full z-1 justify-right relative">
         <div
           class="p-8 text-white bg-lime-600 dark:bg-black rounded shadow-md"

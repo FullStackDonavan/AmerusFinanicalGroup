@@ -1,37 +1,64 @@
+<script setup lang="ts">
+const initalCheck = await useLoggedIn();
+const isLoggedIn = ref(initalCheck);
+const user = useState("user");
+const items = ref([
+  {
+    title: "Overview",
+    path: "/dashboard",
+    icon: "material-symbols:space-dashboard-rounded",
+  },
+  {
+    title: "Transactions",
+    path: "/dashboard/Transactions",
+    icon: "fluent:arrow-swap-16-regular",
+  },
+  {
+    title: "Leaderboard",
+    path: "/dashboard/Leaderboard",
+    icon: "icon-park-outline:table-report",
+  },
+  {
+    title: "Questions",
+    path: "/dashboard/ask",
+    icon: "ic:sharp-live-help",
+  },
+  {
+    title: "Search",
+    path: "/dashboard/search",
+    icon: "ic:outline-find-in-page",
+  },
+]);
+
+async function checkIfLoggedIn() {
+  const check = await useLoggedIn();
+  isLoggedIn.value = check;
+}
+
+watch(
+  user,
+  async () => {
+    await checkIfLoggedIn();
+  },
+  { deep: true }
+);
+</script>
 <template>
-  <nav class="hidden md:flex justify-between space-x-10 align-bottom mt-14">
-    <div class="hidden md:flex space-x-10 align-bottom">
-      <nuxt-link to="/">
-        <span
-          class="text-base font-medium text-gray-500 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-300"
+  <div class="overflow-y-auto">
+    <ul class="space-y-2">
+      <li v-for="(item, index) in items" :key="index">
+        <NuxtLink
+          :to="item.path"
+          class="flex items-center text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
         >
-          Home
-        </span>
-      </nuxt-link>
-
-      <nuxt-link to="/about-us">
-        <span
-          class="text-base font-medium text-gray-500 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-300"
-        >
-          About Us
-        </span>
-      </nuxt-link>
-
-      <nuxt-link to="/insurance-services">
-        <span
-          class="text-base font-medium text-gray-500 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-300"
-        >
-          Insurance Services
-        </span>
-      </nuxt-link>
-
-      <nuxt-link to="/articles/overview">
-        <span
-          class="text-base font-medium text-gray-500 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-300"
-        >
-          Blog
-        </span>
-      </nuxt-link>
-    </div>
-  </nav>
+          <Icon
+            :name="item.icon"
+            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            size="45"
+          />
+          <span class="">{{ item.title }}</span>
+        </NuxtLink>
+      </li>
+    </ul>
+  </div>
 </template>

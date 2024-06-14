@@ -49,7 +49,6 @@ function emitCloseEvent() {
       </svg>
       <span class="sr-only">Close menu</span>
     </button>
-
-    <MobileMenuList />
+    <MenuList />
   </div>
 </template>

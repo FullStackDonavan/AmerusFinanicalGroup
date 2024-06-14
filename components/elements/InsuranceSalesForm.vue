@@ -1,8 +1,25 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: "auth",
+import {
+  DateFormatter,
+  type DateValue,
+  getLocalTimeZone,
+} from "@internationalized/date";
+
+import { Calendar as CalendarIcon } from "lucide-vue-next";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "../lib/utils";
+
+const df = new DateFormatter("en-US", {
+  dateStyle: "long",
 });
 
+const value = ref<DateValue>();
 interface Props {
   data: IInsuranceSalesPost;
   endpoint?: string;
@@ -98,7 +115,7 @@ async function postInsuranceSales() {
     { method: "post", body: { data: postData }, pick: ["id"] }
   );
 
-  router.push(`/dashboard/SalesLog`);
+  router.push(`/dashboard/Transactions`);
 }
 </script>
 
@@ -191,14 +208,29 @@ async function postInsuranceSales() {
       >
         Policy Year
       </label>
-      <input
-        v-model="data.policyYear"
-        type="number"
-        id="policyYear"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-        placeholder="Policy Year"
-        required
-      />
+      <Popover>
+        <PopoverTrigger as-child>
+          <Button
+            variant="outline"
+            :class="
+              cn(
+                'w-[280px] justify-start text-left font-normal',
+                !value && 'text-muted-foreground'
+              )
+            "
+          >
+            <CalendarIcon class="mr-2 h-4 w-4" />
+            {{
+              value
+                ? df.format(value.toDate(getLocalTimeZone()))
+                : "Pick a date"
+            }}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent class="w-auto p-0">
+          <Calendar v-model="value" initial-focus />
+        </PopoverContent>
+      </Popover>
     </div>
 
     <div class="mb-6">
@@ -219,13 +251,13 @@ async function postInsuranceSales() {
     </div>
 
     <div class="flex justify-center sm:justify-end">
-      <button
+      <Button
         @click="postInsuranceSales"
         type="button"
         class="mt-5 dark:focus:ring-amber-800 bg-blue-400 hover:bg-blue-800 dark:bg-amber-500 dark:hover:bg-amber-600 font-medium text-sm rounded-lg px-5 py-2.5 mr-2 mb-2"
       >
         Post Sale
-      </button>
+      </Button>
     </div>
   </form>
 </template>
